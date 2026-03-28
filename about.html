@@ -6,6 +6,7 @@
     <title>About Ignite</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="./premium.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <script>
         tailwind.config = {
@@ -64,7 +65,7 @@
     </style>
 </head>
 <body class="bg-surface text-on-surface font-body">
-    <header class="fixed top-0 w-full z-50 bg-[#131313]/70 backdrop-blur-md border-b border-outline-variant/20">
+    <header class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
         <div class="h-20 px-8 flex items-center justify-between">
             <div class="flex items-center gap-8">
                 <a href="index.html" class="inline-flex items-center gap-3">
@@ -100,7 +101,7 @@
     </div>
 
     <main class="pt-24">
-        <section class="px-8 md:px-20 py-20 border-b border-outline-variant/15 reveal">
+        <section class="px-8 md:px-20 py-20 border-b border-outline-variant/15" data-reveal>
             <p class="text-primary uppercase tracking-[0.2em] text-xs mb-3">About Ignite</p>
             <h1 class="text-5xl md:text-7xl font-headline font-bold uppercase leading-tight mb-6">Built For Serious Living</h1>
             <p class="text-on-surface-variant text-lg max-w-3xl leading-relaxed">Ignite started with a simple observation: students and early-career professionals deserve better than random listings and unclear promises. We designed a platform where trust, design quality, and daily comfort are not optional extras.</p>
@@ -111,32 +112,32 @@
         </section>
 
         <section class="px-8 md:px-20 py-20 grid md:grid-cols-2 gap-10">
-            <article class="bg-surface-container-low rounded-3xl p-10 border border-outline-variant/20 reveal reveal-delay-1 pro-hover">
+            <article class="glass-card rounded-3xl p-10 premium-hover cursor-glow" data-reveal data-reveal-delay="1">
                 <h2 class="text-3xl font-headline font-bold uppercase mb-4">Mission</h2>
                 <p class="text-on-surface-variant leading-relaxed">Help every guest find a safe, efficient, and inspiring place to stay with full pricing transparency, verified amenities, and straightforward communication.</p>
             </article>
-            <article class="bg-surface-container-low rounded-3xl p-10 border border-outline-variant/20 reveal reveal-delay-2 pro-hover">
+            <article class="glass-card rounded-3xl p-10 premium-hover cursor-glow" data-reveal data-reveal-delay="2">
                 <h2 class="text-3xl font-headline font-bold uppercase mb-4">Vision</h2>
                 <p class="text-on-surface-variant leading-relaxed">Build the most trusted accommodation network for modern Indian cities where tenants and owners both win through reliable standards and smart operations.</p>
             </article>
         </section>
 
-        <section class="px-8 md:px-20 py-20 bg-surface-container-low reveal reveal-delay-2">
+        <section class="px-8 md:px-20 py-20 bg-surface-container-low" data-reveal>
             <h2 class="text-4xl font-headline font-bold uppercase mb-10">Platform At A Glance</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="bg-[#111] border border-outline-variant/20 rounded-2xl p-6 pro-hover">
-                    <p class="text-4xl font-headline font-bold text-primary">120+</p>
+                <div class="glass-card rounded-2xl p-6 premium-hover cursor-glow" data-reveal data-reveal-delay="1">
+                    <p class="text-4xl font-headline font-bold text-primary count-up" data-target="120" data-suffix="+">0+</p>
                     <p class="text-xs uppercase tracking-widest text-on-surface-variant mt-2">Verified Properties</p>
                 </div>
-                <div class="bg-[#111] border border-outline-variant/20 rounded-2xl p-6 pro-hover">
-                    <p class="text-4xl font-headline font-bold text-primary">40+</p>
+                <div class="glass-card rounded-2xl p-6 premium-hover cursor-glow" data-reveal data-reveal-delay="2">
+                    <p class="text-4xl font-headline font-bold text-primary count-up" data-target="40" data-suffix="+">0+</p>
                     <p class="text-xs uppercase tracking-widest text-on-surface-variant mt-2">Neighborhoods Covered</p>
                 </div>
-                <div class="bg-[#111] border border-outline-variant/20 rounded-2xl p-6 pro-hover">
-                    <p class="text-4xl font-headline font-bold text-primary">98%</p>
+                <div class="glass-card rounded-2xl p-6 premium-hover cursor-glow" data-reveal data-reveal-delay="3">
+                    <p class="text-4xl font-headline font-bold text-primary count-up" data-target="98" data-suffix="%">0%</p>
                     <p class="text-xs uppercase tracking-widest text-on-surface-variant mt-2">Guest Satisfaction</p>
                 </div>
-                <div class="bg-[#111] border border-outline-variant/20 rounded-2xl p-6 pro-hover">
+                <div class="glass-card rounded-2xl p-6 premium-hover cursor-glow" data-reveal data-reveal-delay="4">
                     <p class="text-4xl font-headline font-bold text-primary">24/7</p>
                     <p class="text-xs uppercase tracking-widest text-on-surface-variant mt-2">Response Coverage</p>
                 </div>
@@ -177,7 +178,7 @@
         </section>
     </main>
 
-    <footer class="bg-[#131313] border-t border-outline-variant/20">
+    <footer class="bg-[#131313] border-t border-outline-variant/20 footer-glow">
         <div class="px-8 md:px-20 py-12 flex flex-col md:flex-row justify-between items-center gap-8">
             <div>
                 <img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
@@ -217,5 +218,6 @@
             }
         });
     </script>
+    <script src="./js/premium.js"></script>
 </body>
 </html>

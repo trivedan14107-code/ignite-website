@@ -6,6 +6,7 @@
     <title>Ignite - Neo-Tokyo Capsule</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="./premium.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="./js/supabase-client.js"></script>
@@ -63,11 +64,11 @@
 <body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container relative">
 
     <!-- Top Navigation -->
-    <header class="fixed top-0 w-full z-40 bg-[#131313]/80 backdrop-blur-md border-b border-outline-variant/10 transition-all duration-300">
+    <header class="fixed top-0 w-full z-40 glass-nav transition-all duration-300">
         <!-- ... [Standard Header Content matching index.html] ... -->
         <div class="flex justify-between items-center px-8 h-20 w-full max-w-none">
             <div class="flex items-center gap-8">
-                <a href="index.html" class="text-2xl font-['Space_Grotesk'] font-bold tracking-widest text-[#ffb59d]">IGNITE</a>
+                <a href="index.html" class="inline-flex items-center"><img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/></a>
                 <nav class="hidden md:flex gap-8 items-center">
                     <a class="text-[#e5e2e1] opacity-70 hover:text-[#ffb59d] transition-all duration-200 ease-out font-['Space_Grotesk'] font-bold tracking-[0.05em] uppercase text-sm" href="listings.html">Explore</a>
                     <a class="text-[#e5e2e1] opacity-70 hover:text-[#ffb59d] transition-all duration-200 ease-out font-['Space_Grotesk'] font-bold tracking-[0.05em] uppercase text-sm" href="listings.html">Browse PG's</a>
@@ -461,5 +462,6 @@
             }
         });
     </script>
+<script src="./js/premium.js"></script>
 </body>
 </html>

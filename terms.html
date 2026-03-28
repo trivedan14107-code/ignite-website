@@ -6,6 +6,7 @@
     <title>Ignite Terms of Service</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="./premium.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <script>
         tailwind.config = {
@@ -63,7 +64,7 @@
     </style>
 </head>
 <body class="bg-surface text-on-surface font-body">
-    <header class="fixed top-0 w-full z-50 bg-[#131313]/70 backdrop-blur-md border-b border-outline-variant/20">
+    <header class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
         <div class="h-20 px-8 flex items-center justify-between">
             <div class="flex items-center gap-8">
                 <a href="index.html" class="inline-flex items-center gap-3">
@@ -99,7 +100,7 @@
     </div>
 
     <main class="pt-24">
-        <section class="px-8 md:px-20 py-16 border-b border-outline-variant/20 reveal">
+        <section class="px-8 md:px-20 py-16 border-b border-outline-variant/20" data-reveal>
             <p class="text-primary uppercase tracking-[0.2em] text-xs mb-3">Legal</p>
             <h1 class="text-5xl md:text-6xl font-headline font-bold uppercase mb-5">Terms Of Service</h1>
             <p class="text-on-surface-variant max-w-4xl">Effective date: March 27, 2026. These Terms govern your access to and use of Ignite services, including browsing listings, inquiries, account use, and owner listing management.</p>
@@ -109,7 +110,7 @@
             </div>
         </section>
 
-        <section class="px-8 md:px-20 py-14 grid lg:grid-cols-4 gap-8 reveal reveal-delay-1">
+        <section class="px-8 md:px-20 py-14 grid lg:grid-cols-4 gap-8" data-reveal>
             <aside class="lg:col-span-1 lg:sticky lg:top-28 h-fit bg-surface-container-low border border-outline-variant/20 rounded-2xl p-6 pro-hover">
                 <p class="text-xs uppercase tracking-widest text-primary mb-4">On This Page</p>
                 <nav class="space-y-3 text-sm">
@@ -176,7 +177,7 @@
         </section>
     </main>
 
-    <footer class="bg-[#131313] border-t border-outline-variant/20">
+    <footer class="bg-[#131313] border-t border-outline-variant/20 footer-glow">
         <div class="px-8 md:px-20 py-12 flex flex-col md:flex-row justify-between items-center gap-8">
             <div>
                 <img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
@@ -216,5 +217,6 @@
             }
         });
     </script>
+    <script src="./js/premium.js"></script>
 </body>
 </html>

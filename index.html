@@ -3,9 +3,12 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="description" content="Ignite — Premium hostel marketplace for digital nomads, students & professionals. Find verified, curated living spaces across India."/>
+<meta property="og:title" content="Ignite — Find Your Sanctuary"/>
+<meta property="og:description" content="Elevated living for the global nomad. Curated hostel spaces designed for focus, connection, and the professional spirit."/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="./premium.css" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
       tailwind.config = {
@@ -121,7 +124,7 @@
 </head>
 <body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
 <!-- TopAppBar Shell -->
-<header class="fixed top-0 w-full z-50 bg-[#131313]/60 backdrop-blur-md shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300">
+<header class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
 <div class="flex justify-between items-center px-8 h-20 w-full max-w-none">
 <div class="flex items-center gap-8">
 <a class="inline-flex items-center" href="index.html">
@@ -164,23 +167,25 @@
 <main class="pt-20">
 <!-- Hero Section -->
 <section class="relative min-h-[90vh] flex items-center px-8 md:px-20 py-24 overflow-hidden">
+<div class="floating-orb orb-1"></div>
+<div class="floating-orb orb-2"></div>
 <div class="absolute inset-0 z-0">
 <div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent z-10"></div>
-<img class="w-full h-full object-cover grayscale-[0.2] opacity-60" data-alt="Modern dark luxury hostel lounge with warm ambient lighting, futuristic furniture, and floor to ceiling windows overlooking a neon city skyline at night" src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=2069&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
+<img class="w-full h-full object-cover grayscale-[0.2] opacity-60 parallax-bg" data-parallax-speed="0.15" loading="lazy" alt="Modern dark luxury hostel lounge" src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=2069&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
 </div>
 <div class="relative z-20 max-w-4xl">
-<div class="mb-6 flex items-center gap-3">
+<div class="mb-6 flex items-center gap-3" data-reveal data-reveal-delay="1">
 <span class="w-12 h-[1px] bg-primary-container"></span>
 <span class="text-primary font-label tracking-[0.2em] text-xs uppercase">To the Future</span>
 </div>
-<h1 class="text-6xl md:text-8xl font-headline font-bold uppercase tracking-tight leading-[0.9] mb-8">
+<h1 class="text-6xl md:text-8xl font-headline font-bold uppercase tracking-tight leading-[0.9] mb-8" data-reveal data-reveal-delay="2">
                     Find Your <br/>
-<span class="text-transparent bg-clip-text kinetic-gradient">Sanctuary.</span>
+<span class="gradient-text-animated">Sanctuary.</span>
 </h1>
-<p class="text-on-surface-variant text-lg md:text-xl max-w-xl mb-12 leading-relaxed">
+<p class="text-on-surface-variant text-lg md:text-xl max-w-xl mb-12 leading-relaxed" data-reveal data-reveal-delay="3">
                     Elevated living for the global nomad. Experience curated hostel spaces designed for focus, connection, and the professional spirit.
                 </p>
-<div class="flex flex-wrap gap-4">
+<div class="flex flex-wrap gap-4" data-reveal data-reveal-delay="4">
 <a href="listings.html" class="kinetic-gradient text-on-primary-fixed px-10 py-5 rounded-full font-headline font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(255,107,53,0.3)] inline-block">
                         Explore Listings
                     </a>
@@ -194,12 +199,12 @@
 </section>
 <!-- Bento Grid Categories -->
 <section class="px-8 md:px-20 py-32 bg-surface-container-low">
-<div class="mb-16">
+<div class="mb-16" data-reveal>
 <h2 class="text-4xl font-headline font-bold uppercase tracking-tight mb-4">Curated Verticals</h2>
 <div class="w-20 h-1 bg-primary-container"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[600px]">
-<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500">
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500 cursor-glow premium-hover" data-reveal data-reveal-delay="1">
 <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60" alt="Digital Nomads Workspace" src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
 <div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
 <div class="absolute bottom-8 left-8 z-10">
@@ -208,7 +213,7 @@
 <p class="text-on-surface-variant max-w-md mt-2">Ultra-high-speed fiber, silent zones, and ergonomic stations.</p>
 </div>
 </div>
-<div class="md:col-span-4 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500">
+<div class="md:col-span-4 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500 cursor-glow premium-hover" data-reveal data-reveal-delay="2">
 <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70" alt="Social Hub" src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?q=80&w=800&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
 <div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
 <div class="absolute bottom-8 left-8 z-10">
@@ -216,14 +221,14 @@
 <h3 class="text-2xl font-headline font-bold uppercase">Social Hubs</h3>
 </div>
 </div>
-<div class="md:col-span-4 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500">
+<div class="md:col-span-4 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500 cursor-glow premium-hover" data-reveal data-reveal-delay="3">
 <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70" alt="Boutique Stays" src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
 <div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
 <div class="absolute bottom-8 left-8 z-10">
 <h3 class="text-2xl font-headline font-bold uppercase">Boutique Stays</h3>
 </div>
 </div>
-<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500">
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500 cursor-glow premium-hover" data-reveal data-reveal-delay="4">
 <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-40 grayscale" alt="Ignite Philosophy" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
 <div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
 <div class="relative z-10 h-full flex flex-col justify-center px-12">
@@ -242,7 +247,7 @@
 </section>
 <!-- Feature Listings -->
 <section class="px-8 md:px-20 py-32 bg-surface">
-<div class="flex justify-between items-end mb-16">
+<div class="flex justify-between items-end mb-16" data-reveal>
 <div>
 <p class="text-primary font-label tracking-widest uppercase text-xs mb-2">Featured Destinations</p>
 <h2 class="text-5xl font-headline font-bold uppercase tracking-tight">The Core Collection</h2>
@@ -258,14 +263,14 @@
         <!-- Why Use Ignite Section -->
         <section class="px-8 md:px-20 py-32 bg-[#0F0F0F] relative overflow-hidden border-t border-outline-variant/10">
             <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3"></div>
-            <div class="mb-16 max-w-2xl">
+            <div class="mb-16 max-w-2xl" data-reveal>
                 <p class="text-primary font-label tracking-widest uppercase text-xs mb-2">The Ignite Advantage</p>
                 <h2 class="text-4xl md:text-5xl font-headline font-bold uppercase tracking-tight mb-6">Why Use Ignite?</h2>
                 <div class="w-20 h-1 bg-primary-container"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
                 <!-- Feature 1 -->
-                <div class="bg-surface-container-low p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                <div class="glass-card p-8 rounded-2xl premium-hover icon-hover-pulse cursor-glow" data-reveal data-reveal-delay="1">
                     <div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-6">
                         <span class="material-symbols-outlined text-primary">verified</span>
                     </div>
@@ -273,7 +278,7 @@
                     <p class="text-on-surface-variant text-sm">Every space on Ignite is hand-picked and physically verified for quality, safety, and modern amenities.</p>
                 </div>
                 <!-- Feature 2 -->
-                <div class="bg-surface-container-low p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                <div class="glass-card p-8 rounded-2xl premium-hover icon-hover-pulse cursor-glow" data-reveal data-reveal-delay="2">
                     <div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-6">
                         <span class="material-symbols-outlined text-primary">speed</span>
                     </div>
@@ -281,7 +286,7 @@
                     <p class="text-on-surface-variant text-sm">Say goodbye to endless paperwork. Secure your sanctuary with 1-click verified bookings.</p>
                 </div>
                 <!-- Feature 3 -->
-                <div class="bg-surface-container-low p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                <div class="glass-card p-8 rounded-2xl premium-hover icon-hover-pulse cursor-glow" data-reveal data-reveal-delay="3">
                     <div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-6">
                         <span class="material-symbols-outlined text-primary">group</span>
                     </div>
@@ -289,7 +294,7 @@
                     <p class="text-on-surface-variant text-sm">Live among ambitious professionals, creators, and digital nomads building the future.</p>
                 </div>
                 <!-- Feature 4 -->
-                <div class="bg-surface-container-low p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                <div class="glass-card p-8 rounded-2xl premium-hover icon-hover-pulse cursor-glow" data-reveal data-reveal-delay="4">
                     <div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-6">
                         <span class="material-symbols-outlined text-primary">shield</span>
                     </div>
@@ -301,14 +306,14 @@
 
         <!-- Pricing Plans -->
         <section class="px-8 md:px-20 py-32 bg-surface-container-low relative border-t border-baseline/10">
-            <div class="text-center mb-20 max-w-3xl mx-auto">
+            <div class="text-center mb-20 max-w-3xl mx-auto" data-reveal>
                 <p class="text-primary font-label tracking-widest uppercase text-xs mb-2">For Hostel Owners</p>
                 <h2 class="text-4xl md:text-5xl font-headline font-bold uppercase tracking-tight mb-6">Scale Your Sanctuary</h2>
                 <p class="text-on-surface-variant text-lg">Partner with Ignite and get your premium spaces in front of verified, high-intent tenants.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 <!-- Starter Plan -->
-                <div class="bg-surface p-10 rounded-3xl border border-outline-variant/20 flex flex-col hover:border-primary-container/50 transition-colors">
+                <div class="glass-card p-10 rounded-3xl flex flex-col premium-hover" data-reveal data-reveal-delay="1">
                     <h3 class="text-2xl font-headline font-bold uppercase mb-2">Starter</h3>
                     <p class="text-on-surface-variant text-sm mb-6 pb-6 border-b border-outline-variant/20">Perfect for single flagship locations.</p>
                     <div class="mb-8">
@@ -322,7 +327,7 @@
                     <a href="owner-auth.html" class="w-full text-center border border-outline-variant/30 text-on-surface py-3 rounded-full font-bold uppercase tracking-wider hover:bg-surface-container-highest transition-colors text-sm">Start Free Trial</a>
                 </div>
                 <!-- Pro Plan (Popular) -->
-                <div class="bg-[#1A1A1A] p-10 rounded-3xl border-2 border-primary-container relative flex flex-col transform md:-translate-y-4 shadow-[0_20px_40px_rgba(255,107,53,0.15)] hover:scale-105 transition-transform duration-300">
+                <div class="bg-[#1A1A1A] p-10 rounded-3xl border-2 border-primary-container relative flex flex-col transform md:-translate-y-4 shadow-[0_20px_40px_rgba(255,107,53,0.15)] hover:scale-105 transition-transform duration-300 glow-border" data-reveal data-reveal-delay="2">
                     <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-container text-on-primary-fixed px-4 py-1 rounded-full text-[0.6rem] font-bold tracking-widest uppercase">Most Popular</div>
                     <h3 class="text-2xl font-headline font-bold uppercase mb-2">Pro Partner</h3>
                     <p class="text-on-surface-variant text-sm mb-6 pb-6 border-b border-outline-variant/20">For growing hostel empires.</p>
@@ -338,7 +343,7 @@
                     <a href="owner-auth.html" class="w-full text-center bg-primary-container text-on-primary-fixed py-3 rounded-full font-bold uppercase tracking-wider hover:scale-105 active:scale-95 transition-transform text-sm shadow-[0_10px_20px_rgba(255,107,53,0.2)]">Go Pro</a>
                 </div>
                 <!-- Enterprise Plan -->
-                <div class="bg-surface p-10 rounded-3xl border border-outline-variant/20 flex flex-col hover:border-primary-container/50 transition-colors">
+                <div class="glass-card p-10 rounded-3xl flex flex-col premium-hover" data-reveal data-reveal-delay="3">
                     <h3 class="text-2xl font-headline font-bold uppercase mb-2">Enterprise</h3>
                     <p class="text-on-surface-variant text-sm mb-6 pb-6 border-b border-outline-variant/20">National scale franchise operations.</p>
                     <div class="mb-8">
@@ -368,7 +373,7 @@
         </div>
 
         <!-- Add Review Form -->
-        <div class="bg-surface border border-outline-variant/20 rounded-3xl p-8 md:p-12 shadow-[0_20px_40px_rgba(0,0,0,0.5)] relative overflow-hidden">
+        <div class="glass-card rounded-3xl p-8 md:p-12 shadow-[0_20px_40px_rgba(0,0,0,0.5)] relative overflow-hidden" data-reveal>
             <div class="absolute inset-0 kinetic-gradient opacity-5"></div>
             <div class="relative z-10">
                 <h3 class="text-2xl font-headline font-bold uppercase mb-6 tracking-tight">Leave a Review</h3>
@@ -404,7 +409,7 @@
 </section>
 </main>
 <!-- Footer Shell -->
-<footer class="bg-[#131313] w-full border-t border-[#594139]/15">
+<footer class="bg-[#131313] w-full border-t border-[#594139]/15 footer-glow">
 <div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full">
 <div class="mb-10 md:mb-0">
 <img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
@@ -473,7 +478,11 @@
         const grid = document.getElementById('featured-grid');
         if(!grid || !window.supabaseClient) return;
         
-        grid.innerHTML = '<div class="col-span-full py-10 text-center"><p class="text-on-surface-variant font-bold tracking-widest uppercase text-sm">Loading Featured Sanctuaries...</p></div>';
+        grid.innerHTML = `
+            <div class="group"><div class="skeleton aspect-[4/5] rounded-[3rem] mb-6"></div><div class="px-4"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div><div class="flex gap-2 mt-4"><div class="skeleton" style="width:60px;height:24px;border-radius:999px"></div><div class="skeleton" style="width:50px;height:24px;border-radius:999px"></div></div></div></div>
+            <div class="group"><div class="skeleton aspect-[4/5] rounded-[3rem] mb-6"></div><div class="px-4"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div><div class="flex gap-2 mt-4"><div class="skeleton" style="width:60px;height:24px;border-radius:999px"></div><div class="skeleton" style="width:50px;height:24px;border-radius:999px"></div></div></div></div>
+            <div class="group"><div class="skeleton aspect-[4/5] rounded-[3rem] mb-6"></div><div class="px-4"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div><div class="flex gap-2 mt-4"><div class="skeleton" style="width:60px;height:24px;border-radius:999px"></div><div class="skeleton" style="width:50px;height:24px;border-radius:999px"></div></div></div></div>
+        `;
         
         const { data: hostels, error } = await window.supabaseClient
             .from('hostels')
@@ -500,11 +509,22 @@
         ];
         grid.innerHTML = hostels.map((h, i) => {
             const fallbackImage = stitchPhotos[i % stitchPhotos.length];
-            const rawImage = (h.images && h.images.length > 0) ? h.images[0] : '';
-            const img = (typeof rawImage === 'string' && rawImage.trim().length > 0)
+            // Parse images — Supabase may return a JSON string or native array
+            let imgsArr = [];
+            try {
+                imgsArr = typeof h.images === 'string' ? JSON.parse(h.images) : (h.images || []);
+                if (!Array.isArray(imgsArr)) imgsArr = [];
+            } catch(e) { imgsArr = []; }
+            const rawImage = imgsArr.length > 0 ? imgsArr[0] : '';
+            const img = (typeof rawImage === 'string' && rawImage.startsWith('http'))
                 ? rawImage
                 : fallbackImage;
-            const amenities = Array.isArray(h.amenities) ? h.amenities : [];
+            // Parse amenities same way
+            let amenities = [];
+            try {
+                amenities = typeof h.amenities === 'string' ? JSON.parse(h.amenities) : (h.amenities || []);
+                if (!Array.isArray(amenities)) amenities = [];
+            } catch(e) { amenities = []; }
             const isCenterRound = i === 1 ? 'rounded-full' : 'rounded-[3rem]';
             
             return `
@@ -530,6 +550,11 @@
                 </div>
             </div>`;
         }).join('');
+
+        // Wire up scroll-reveal & cursor-glow on dynamically injected cards
+        requestAnimationFrame(function() {
+            if (window.premiumObserve) window.premiumObserve(grid);
+        });
 
         // Review System Logic
         const reviewForm = document.getElementById('review-form');
@@ -601,4 +626,5 @@
         }
     });
 </script>
+<script src="./js/premium.js"></script>
 </html>

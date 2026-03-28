@@ -6,6 +6,7 @@
     <title>Ignite - Owner Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="./premium.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="./js/supabase-client.js"></script>
@@ -59,6 +60,8 @@
     <div class="hidden lg:block lg:w-1/2 relative">
         <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2000&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';" class="w-full h-full object-cover"/>
         <div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-3"></div>
         <div class="absolute inset-x-0 bottom-0 p-16">
             <a href="index.html" class="text-3xl font-['Space_Grotesk'] font-bold tracking-widest text-[#ffb59d] block mb-12">IGNITE</a>
             <h2 class="text-4xl lg:text-5xl font-headline font-bold uppercase tracking-tight mb-4">Partner With The Future.</h2>
@@ -343,5 +346,6 @@
             if (error) showAlert(error.message, 'error');
         }
     </script>
+<script src="./js/premium.js"></script>
 </body>
 </html>

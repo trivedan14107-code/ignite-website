@@ -6,6 +6,7 @@
     <title>Ignite - Explore Sanctuaries</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="./premium.css" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="./js/supabase-client.js"></script>
@@ -93,7 +94,7 @@
 <body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
 
     <!-- Top Navigation -->
-    <header class="fixed top-0 w-full z-50 bg-[#131313]/60 backdrop-blur-md shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300">
+    <header class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
         <div class="flex justify-between items-center px-8 h-20 w-full max-w-none">
             <div class="flex items-center gap-8">
                 <a href="index.html" class="inline-flex items-center">
@@ -140,7 +141,7 @@
         <div class="mb-10 flex flex-col md:flex-row justify-between items-end gap-4 border-b border-outline-variant/10 pb-6">
             <div>
                 <p class="text-primary font-label tracking-widest uppercase text-xs mb-2">Explore</p>
-                <h1 class="text-4xl md:text-5xl font-headline font-bold uppercase tracking-tight">Available Sanctuaries</h1>
+            <h1 class="text-4xl md:text-5xl font-headline font-bold uppercase tracking-tight">Available Sanctuaries</h1>
             </div>
             <div class="flex items-center gap-4">
                 <div class="relative md:hidden w-full">
@@ -163,7 +164,7 @@
     </main>
 
     <!-- Footer Shell -->
-    <footer class="bg-[#131313] w-full border-t border-[#594139]/15">
+    <footer class="bg-[#131313] w-full border-t border-[#594139]/15 footer-glow">
         <div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full">
             <div class="mb-10 md:mb-0">
                 <img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
@@ -210,7 +211,12 @@
             const grid = document.getElementById('listings-grid');
             if(!grid || !window.supabaseClient) return;
             
-            grid.innerHTML = '<div class="col-span-full py-20 text-center"><p class="text-on-surface-variant font-bold tracking-widest uppercase text-sm">Loading Sanctuaries...</p></div>';
+            grid.innerHTML = `
+                <div class="group"><div class="skeleton aspect-[4/5] rounded-[0.75rem] mb-6"></div><div class="px-2"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div></div>
+                <div class="group"><div class="skeleton aspect-[4/5] rounded-[0.75rem] mb-6"></div><div class="px-2"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div></div>
+                <div class="group hidden sm:block"><div class="skeleton aspect-[4/5] rounded-[0.75rem] mb-6"></div><div class="px-2"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div></div>
+                <div class="group hidden xl:block"><div class="skeleton aspect-[4/5] rounded-[0.75rem] mb-6"></div><div class="px-2"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div></div>
+            `;
             
             const { data: hostels, error } = await window.supabaseClient
                 .from('hostels')
@@ -227,16 +233,36 @@
                 return;
             }
             
-            grid.innerHTML = hostels.map(h => {
-                const fallbackImage = './ignite-placeholder.svg';
-                const rawImage = (h.images && h.images.length > 0) ? h.images[0] : '';
-                const img = (typeof rawImage === 'string' && rawImage.trim().length > 0)
+            grid.innerHTML = hostels.map((h, i) => {
+                const fallbackImages = [
+                    'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=800&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1502672260266-1c1c2940e4f4?q=80&w=800&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=800&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=800&auto=format&fit=crop'
+                ];
+                // Parse images — Supabase may return a JSON string or native array
+                let imagesArr = [];
+                try {
+                    imagesArr = typeof h.images === 'string' ? JSON.parse(h.images) : (h.images || []);
+                    if (!Array.isArray(imagesArr)) imagesArr = [];
+                } catch(e) { imagesArr = []; }
+                const rawImage = imagesArr.length > 0 ? imagesArr[0] : '';
+                const img = (typeof rawImage === 'string' && rawImage.startsWith('http'))
                     ? rawImage
-                    : fallbackImage;
-                const parsedAmenities = Array.isArray(h.amenities) ? h.amenities : [];
+                    : fallbackImages[i % fallbackImages.length];
+                // Parse amenities same way
+                let parsedAmenities = [];
+                try {
+                    parsedAmenities = typeof h.amenities === 'string' ? JSON.parse(h.amenities) : (h.amenities || []);
+                    if (!Array.isArray(parsedAmenities)) parsedAmenities = [];
+                } catch(e) { parsedAmenities = []; }
                 
                 return `
-                <a href="hostel-detail.html?id=${h.id}" class="group cursor-pointer block">
+                <a href="hostel-detail.html?id=${h.id}" class="group cursor-pointer block cursor-glow premium-hover rounded-[0.75rem]" data-reveal data-reveal-delay="${(i % 4) + 1}">
                     <div class="relative overflow-hidden rounded-[0.75rem] aspect-[4/5] mb-6 bg-[#1A1A1A]">
                         <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" src="${img}" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
                         <div class="absolute top-4 left-4 flex gap-2">
@@ -258,7 +284,14 @@
                     </div>
                 </a>`;
             }).join('');
+
+            // Wire up scroll-reveal & cursor-glow on dynamically injected cards
+            // Use rAF so the browser paints the DOM before the observer fires
+            requestAnimationFrame(function() {
+                if (window.premiumObserve) window.premiumObserve(grid);
+            });
         });
     </script>
+    <script src="./js/premium.js"></script>
 </body>
 </html>
