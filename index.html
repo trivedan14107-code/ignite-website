@@ -490,8 +490,15 @@
             return;
         }
         
+        const stitchPhotos = [
+            'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1502672260266-1c1c2940e4f4?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop'
+        ];
         grid.innerHTML = hostels.map((h, i) => {
-            const fallbackImage = './ignite-placeholder.svg';
+            const fallbackImage = stitchPhotos[i % stitchPhotos.length];
             const rawImage = (h.images && h.images.length > 0) ? h.images[0] : '';
             const img = (typeof rawImage === 'string' && rawImage.trim().length > 0)
                 ? rawImage
