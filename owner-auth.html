@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Ignite - Owner Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="./js/supabase-client.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#131313",
+                        "primary-container": "#ff6b35",
+                        "secondary-container": "#ffa504",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "surface": "#131313",
+                        "primary": "#ffb59d",
+                        "outline-variant": "#594139",
+                        "surface-container": "#201f1f",
+                        "on-surface-variant": "#e1bfb5",
+                        "surface-bright": "#3a3939",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary": "#ffcb8d",
+                        "on-primary-fixed": "#390c00",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-variant": "#353534",
+                        "tertiary": "#59d5fb",
+                        "error": "#ffb4ab",
+                        "success": "#34d399"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; vertical-align: middle; }
+        .kinetic-gradient { background: linear-gradient(135deg, #ff6b35 0%, #ffb59d 100%); }
+        .noir-blur { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .plan-radio:checked + div { border-color: #ff6b35; background-color: rgba(255, 107, 53, 0.1); }
+        .plan-radio:checked + div .check-icon { opacity: 1; transform: scale(1); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container h-screen overflow-hidden flex">
+
+    <!-- Left Side: Image Banner -->
+    <div class="hidden lg:block lg:w-1/2 relative">
+        <img src="https://images.unsplash.com/photo-1551525212-a1dc18a40781?q=80&w=2069&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';" class="w-full h-full object-cover"/>
+        <div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 p-16">
+            <a href="index.html" class="text-3xl font-['Space_Grotesk'] font-bold tracking-widest text-[#ffb59d] block mb-12">IGNITE</a>
+            <h2 class="text-4xl lg:text-5xl font-headline font-bold uppercase tracking-tight mb-4">Partner With The Future.</h2>
+            <p class="text-on-surface-variant text-lg max-w-md">Join the exclusive network of premium hostel owners. Scale your occupancy with our global audience of professionals and digital nomads.</p>
+        </div>
+    </div>
+
+    <!-- Right Side: Auth Form -->
+    <div class="w-full lg:w-1/2 h-full overflow-y-auto bg-surface relative">
+        <div class="absolute top-8 left-8 z-10 hidden sm:block">
+            <a href="index.html" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-xs font-bold uppercase tracking-widest"><span class="material-symbols-outlined text-[14px]">arrow_back</span> Back to Explore</a>
+        </div>
+        <a href="index.html" class="lg:hidden absolute top-8 left-8 text-2xl font-['Space_Grotesk'] font-bold tracking-widest text-[#ffb59d] z-10">IGNITE</a>
+        
+        <div class="min-h-full flex flex-col justify-center px-8 sm:px-16 md:px-24 py-24">
+            
+            <div id="auth-alert" class="hidden mb-6 p-4 rounded-xl text-sm font-bold flex items-center gap-2 border">
+                <span class="material-symbols-outlined" id="alert-icon"></span>
+                <span id="alert-message"></span>
+            </div>
+
+            <!-- Auth Toggle -->
+            <div class="flex bg-surface-container-low rounded-xl p-1 mb-8 w-fit mx-auto border border-outline-variant/10">
+                <button id="btn-tab-signin" type="button" onclick="switchAuth('signin')" class="px-6 py-2 text-sm font-bold uppercase tracking-widest rounded-lg transition-colors bg-surface-container-highest text-on-surface shadow">Sign In</button>
+                <button id="btn-tab-signup" type="button" onclick="switchAuth('signup')" class="px-6 py-2 text-sm font-bold uppercase tracking-widest rounded-lg transition-colors text-on-surface-variant hover:text-on-surface">Create Account</button>
+            </div>
+
+            <!-- Sign In View -->
+            <div id="signin-view" class="w-full max-w-xl mx-auto block animate-[fadeIn_0.3s_ease-out]">
+                <h1 class="text-3xl font-headline font-bold uppercase tracking-tight mb-2 text-center">Welcome Back</h1>
+                <p class="text-on-surface-variant text-center mb-8 text-sm max-w-sm mx-auto">Enter your credentials to access the Ignite Owner Dashboard.</p>
+
+                <form id="signin-form" class="space-y-4 mb-8">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Email Address</label>
+                        <input type="email" id="signin-email" required class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors text-on-surface">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Password</label>
+                        <input type="password" id="signin-password" required class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors text-on-surface">
+                    </div>
+                    <button type="submit" class="w-full kinetic-gradient py-4 rounded-xl font-headline font-bold text-sm tracking-widest uppercase text-on-primary-fixed shadow-[0_10px_30px_rgba(255,107,53,0.2)] hover:scale-105 active:scale-95 transition-transform mt-6">
+                        Access Dashboard
+                    </button>
+                </form>
+
+                <div class="relative flex py-5 items-center">
+                    <div class="flex-grow border-t border-outline-variant/30"></div>
+                    <span class="flex-shrink-0 mx-4 text-on-surface-variant text-xs font-bold uppercase tracking-widest">Or</span>
+                    <div class="flex-grow border-t border-outline-variant/30"></div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="button" onclick="googleAuth('signin')" class="w-full bg-white text-black py-4 rounded-xl font-headline font-bold text-sm tracking-widest uppercase hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(255,255,255,0.15)] transition-all duration-300 flex justify-center items-center gap-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" onerror="this.onerror=null;this.src='./ignite-logo.svg';" class="w-5 h-5"/>
+                        Continue with Google
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sign Up View -->
+            <div id="signup-view" class="w-full max-w-xl mx-auto hidden animate-[fadeIn_0.3s_ease-out]">
+                <h1 class="text-3xl font-headline font-bold uppercase tracking-tight mb-2 text-center">Become a Partner</h1>
+                <p class="text-on-surface-variant text-center mb-6 text-sm max-w-sm mx-auto">Create your owner account and start listing your properties.</p>
+
+                <form id="signup-form" class="space-y-4 mb-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Hostel Name (Optional)</label>
+                            <input type="text" id="signup-hostel" class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors text-on-surface" placeholder="e.g Ignite Residency">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Phone Number</label>
+                            <input type="tel" id="signup-phone" required class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors text-on-surface" placeholder="+91 99999 99999">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Email Address</label>
+                            <input type="email" id="signup-email" required class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors text-on-surface">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Password</label>
+                            <input type="password" id="signup-password" required minlength="6" class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors text-on-surface">
+                        </div>
+                    </div>
+
+                    <!-- Plan Selection -->
+                    <div class="mt-6 mb-6 p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/10 shadow-lg">
+                        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4 flex items-center gap-2">
+                            Select Partner Plan
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="plan" value="starter" class="peer sr-only plan-radio" checked>
+                                <div class="p-4 rounded-xl border border-outline-variant/30 bg-surface-container-low hover:border-primary/50 transition-all text-center h-full relative overflow-hidden">
+                                    <h4 class="font-headline font-bold uppercase text-sm mb-1">Starter</h4>
+                                    <span class="text-on-surface-variant text-xs">₹0 / mo</span>
+                                    <div class="check-icon absolute top-2 right-2 bg-primary text-on-primary-fixed rounded-full w-5 h-5 flex items-center justify-center opacity-0 scale-50 transition-all duration-300"><span class="material-symbols-outlined text-[14px]">check</span></div>
+                                </div>
+                            </label>
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="plan" value="pro" class="peer sr-only plan-radio">
+                                <div class="p-4 rounded-xl border border-outline-variant/30 bg-surface-container-low hover:border-primary/50 transition-all text-center h-full relative overflow-hidden">
+                                    <h4 class="font-headline font-bold uppercase text-sm mb-1 text-primary">Pro (Popular)</h4>
+                                    <span class="text-on-surface-variant text-xs">₹399 / mo</span>
+                                    <div class="check-icon absolute top-2 right-2 bg-primary text-on-primary-fixed rounded-full w-5 h-5 flex items-center justify-center opacity-0 scale-50 transition-all duration-300"><span class="material-symbols-outlined text-[14px]">check</span></div>
+                                </div>
+                            </label>
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="plan" value="enterprise" class="peer sr-only plan-radio">
+                                <div class="p-4 rounded-xl border border-outline-variant/30 bg-surface-container-low hover:border-primary/50 transition-all text-center h-full relative overflow-hidden">
+                                    <h4 class="font-headline font-bold uppercase text-sm mb-1">Enterprise</h4>
+                                    <span class="text-on-surface-variant text-xs">₹499 / mo</span>
+                                    <div class="check-icon absolute top-2 right-2 bg-primary text-on-primary-fixed rounded-full w-5 h-5 flex items-center justify-center opacity-0 scale-50 transition-all duration-300"><span class="material-symbols-outlined text-[14px]">check</span></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full kinetic-gradient py-4 rounded-xl font-headline font-bold text-sm tracking-widest uppercase text-on-primary-fixed shadow-[0_10px_30px_rgba(255,107,53,0.2)] hover:scale-105 active:scale-95 transition-transform mt-2">
+                        Create Account
+                    </button>
+                    <p class="text-[0.65rem] text-on-surface-variant text-center mt-4">By continuing, you agree to Ignite's Terms of Service and Privacy Policy.</p>
+                </form>
+
+                <div class="relative flex py-5 items-center">
+                    <div class="flex-grow border-t border-outline-variant/30"></div>
+                    <span class="flex-shrink-0 mx-4 text-on-surface-variant text-xs font-bold uppercase tracking-widest">Or</span>
+                    <div class="flex-grow border-t border-outline-variant/30"></div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="button" onclick="googleAuth('signup')" class="w-full bg-white text-black py-4 rounded-xl font-headline font-bold text-sm tracking-widest uppercase hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(255,255,255,0.15)] transition-all duration-300 flex justify-center items-center gap-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" onerror="this.onerror=null;this.src='./ignite-logo.svg';" class="w-5 h-5"/>
+                        Sign up with Google
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check session or error on load
+        document.addEventListener("DOMContentLoaded", async () => {
+            const hash = window.location.hash;
+            if (hash && hash.includes('error_description')) {
+                const params = new URLSearchParams(hash.substring(1));
+                const errMsg = params.get('error_description').replace(/\+/g, ' ');
+                showAlert("Auth Error: " + errMsg + ". (Check your Supabase Google Provider settings)", "error");
+                window.history.replaceState(null, null, ' ');
+            }
+
+            if(!window.supabaseClient) return;
+            const { data: { session } } = await window.supabaseClient.auth.getSession();
+            if (session) {
+                window.location.href = "owner-dashboard.html";
+            }
+        });
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('auth-alert');
+            const icon = document.getElementById('alert-icon');
+            const text = document.getElementById('alert-message');
+            
+            alert.classList.remove('hidden', 'bg-error/10', 'border-error/30', 'text-error', 'bg-success/10', 'border-success/30', 'text-success');
+            
+            if(type === 'error') {
+                alert.classList.add('bg-error/10', 'border-error/30', 'text-error');
+                icon.textContent = 'error';
+            } else {
+                alert.classList.add('bg-success/10', 'border-success/30', 'text-success');
+                icon.textContent = 'check_circle';
+            }
+            
+            text.textContent = message;
+        }
+
+        // --- JS Auth Logic ---
+        function switchAuth(view) {
+            const signinView = document.getElementById('signin-view');
+            const signupView = document.getElementById('signup-view');
+            const btnSignin = document.getElementById('btn-tab-signin');
+            const btnSignup = document.getElementById('btn-tab-signup');
+            
+            // hide any alerts
+            document.getElementById('auth-alert').classList.add('hidden');
+
+            if (view === 'signin') {
+                signupView.classList.add('hidden');
+                signupView.classList.remove('block');
+                signinView.classList.remove('hidden');
+                signinView.classList.add('block');
+                
+                btnSignin.classList.add('bg-surface-container-highest', 'text-on-surface', 'shadow');
+                btnSignin.classList.remove('text-on-surface-variant', 'hover:text-on-surface');
+                
+                btnSignup.classList.remove('bg-surface-container-highest', 'text-on-surface', 'shadow');
+                btnSignup.classList.add('text-on-surface-variant', 'hover:text-on-surface');
+            } else {
+                signinView.classList.add('hidden');
+                signinView.classList.remove('block');
+                signupView.classList.remove('hidden');
+                signupView.classList.add('block');
+                
+                btnSignup.classList.add('bg-surface-container-highest', 'text-on-surface', 'shadow');
+                btnSignup.classList.remove('text-on-surface-variant', 'hover:text-on-surface');
+                
+                btnSignin.classList.remove('bg-surface-container-highest', 'text-on-surface', 'shadow');
+                btnSignin.classList.add('text-on-surface-variant', 'hover:text-on-surface');
+            }
+        }
+
+        document.getElementById('signin-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = "Authenticating..."; btn.disabled = true;
+
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
+
+            const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
+            
+            if (error) {
+                showAlert(error.message, "error");
+                btn.textContent = originalText; btn.disabled = false;
+            } else {
+                showAlert("Success! Redirecting...", "success");
+                window.location.href = "owner-dashboard.html";
+            }
+        });
+
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = "Creating Account..."; btn.disabled = true;
+
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const phone = document.getElementById('signup-phone').value;
+            const hostel_name = document.getElementById('signup-hostel').value;
+            const plan = document.querySelector('input[name="plan"]:checked').value;
+
+            const { data, error } = await window.supabaseClient.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: { phone, hostel_name, plan }
+                }
+            });
+            
+            if (error) {
+                showAlert(error.message, "error");
+                btn.textContent = originalText; btn.disabled = false;
+            } else {
+                if(data.session) {
+                    showAlert("Account created! Redirecting...", "success");
+                    window.location.href = "owner-dashboard.html";
+                } else {
+                    showAlert("Account created! Please check your email to confirm.", "success");
+                    switchAuth('signin'); // swap to sign in
+                    document.getElementById('signin-email').value = email;
+                    document.getElementById('signup-form').reset();
+                    btn.textContent = originalText; btn.disabled = false;
+                }
+            }
+        });
+
+        async function googleAuth(intent) {
+            if(!window.supabaseClient) {
+                showAlert("Supabase client not initialized. Check your project keys.", "error"); return;
+            }
+            if(intent === 'signup') {
+                const plan = document.querySelector('input[name="plan"]:checked').value;
+                localStorage.setItem('ignite_pending_plan', plan);
+            }
+            
+            const { error } = await window.supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: window.location.origin + window.location.pathname.replace('owner-auth.html', 'owner-dashboard.html') }
+            });
+            if (error) showAlert(error.message, 'error');
+        }
+    </script>
+</body>
+</html>

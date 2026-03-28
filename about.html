@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>About Ignite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#131313",
+                        surface: "#131313",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-high": "#2a2a2a",
+                        primary: "#ffb59d",
+                        "primary-container": "#ff6b35",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#e1bfb5",
+                        "outline-variant": "#594139"
+                    },
+                    fontFamily: {
+                        headline: ["Space Grotesk"],
+                        body: ["Manrope"]
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal {
+            animation: fadeSlideUp 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .reveal-delay-1 { animation-delay: 80ms; }
+        .reveal-delay-2 { animation-delay: 160ms; }
+        .reveal-delay-3 { animation-delay: 240ms; }
+        .pro-hover {
+            transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease, border-color 300ms ease;
+        }
+        .pro-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+            border-color: rgba(255, 107, 53, 0.45);
+        }
+        .mobile-menu-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: opacity 220ms ease, transform 220ms ease;
+        }
+        .mobile-menu-overlay.is-open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body">
+    <header class="fixed top-0 w-full z-50 bg-[#131313]/70 backdrop-blur-md border-b border-outline-variant/20">
+        <div class="h-20 px-8 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="inline-flex items-center gap-3">
+                    <img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
+                </a>
+                <nav class="hidden md:flex gap-8 uppercase text-sm tracking-wider font-headline font-semibold">
+                    <a href="index.html" class="text-on-surface-variant hover:text-primary">Home</a>
+                    <a href="listings.html" class="text-on-surface-variant hover:text-primary">Explore</a>
+                    <a href="about.html" class="text-primary border-b-2 border-primary-container pb-1">About</a>
+                    <a href="contact.html" class="text-on-surface-variant hover:text-primary">Contact</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="owner-auth.html" class="hidden sm:inline-block bg-primary-container text-[#390c00] px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider">Host Login</a>
+                <button id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-outline-variant/30" aria-label="Open menu" aria-expanded="false">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 z-40 bg-background/95 backdrop-blur-xl md:hidden">
+        <div class="h-full pt-24 px-8 pb-10 flex flex-col justify-between">
+            <div class="space-y-5">
+                <a href="index.html" class="block text-3xl font-headline font-bold uppercase">Home</a>
+                <a href="listings.html" class="block text-3xl font-headline font-bold uppercase">Explore</a>
+                <a href="about.html" class="block text-3xl font-headline font-bold uppercase text-primary">About</a>
+                <a href="contact.html" class="block text-3xl font-headline font-bold uppercase">Contact</a>
+                <a href="owner-auth.html" class="block text-3xl font-headline font-bold uppercase">Host</a>
+            </div>
+            <button id="mobile-menu-close" class="w-full border border-outline-variant/30 rounded-full py-3 uppercase text-sm tracking-widest">Close Menu</button>
+        </div>
+    </div>
+
+    <main class="pt-24">
+        <section class="px-8 md:px-20 py-20 border-b border-outline-variant/15 reveal">
+            <p class="text-primary uppercase tracking-[0.2em] text-xs mb-3">About Ignite</p>
+            <h1 class="text-5xl md:text-7xl font-headline font-bold uppercase leading-tight mb-6">Built For Serious Living</h1>
+            <p class="text-on-surface-variant text-lg max-w-3xl leading-relaxed">Ignite started with a simple observation: students and early-career professionals deserve better than random listings and unclear promises. We designed a platform where trust, design quality, and daily comfort are not optional extras.</p>
+            <div class="mt-8 bg-surface-container-low border border-outline-variant/25 rounded-2xl px-5 py-4 inline-flex items-center gap-4 pro-hover">
+                <img src="./ignite-logo.svg" alt="Ignite professional logo" class="h-10 w-auto"/>
+                <p class="text-xs uppercase tracking-widest text-on-surface-variant">Crafted for dependable living standards</p>
+            </div>
+        </section>
+
+        <section class="px-8 md:px-20 py-20 grid md:grid-cols-2 gap-10">
+            <article class="bg-surface-container-low rounded-3xl p-10 border border-outline-variant/20 reveal reveal-delay-1 pro-hover">
+                <h2 class="text-3xl font-headline font-bold uppercase mb-4">Mission</h2>
+                <p class="text-on-surface-variant leading-relaxed">Help every guest find a safe, efficient, and inspiring place to stay with full pricing transparency, verified amenities, and straightforward communication.</p>
+            </article>
+            <article class="bg-surface-container-low rounded-3xl p-10 border border-outline-variant/20 reveal reveal-delay-2 pro-hover">
+                <h2 class="text-3xl font-headline font-bold uppercase mb-4">Vision</h2>
+                <p class="text-on-surface-variant leading-relaxed">Build the most trusted accommodation network for modern Indian cities where tenants and owners both win through reliable standards and smart operations.</p>
+            </article>
+        </section>
+
+        <section class="px-8 md:px-20 py-20 bg-surface-container-low reveal reveal-delay-2">
+            <h2 class="text-4xl font-headline font-bold uppercase mb-10">Platform At A Glance</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-[#111] border border-outline-variant/20 rounded-2xl p-6 pro-hover">
+                    <p class="text-4xl font-headline font-bold text-primary">120+</p>
+                    <p class="text-xs uppercase tracking-widest text-on-surface-variant mt-2">Verified Properties</p>
+                </div>
+                <div class="bg-[#111] border border-outline-variant/20 rounded-2xl p-6 pro-hover">
+                    <p class="text-4xl font-headline font-bold text-primary">40+</p>
+                    <p class="text-xs uppercase tracking-widest text-on-surface-variant mt-2">Neighborhoods Covered</p>
+                </div>
+                <div class="bg-[#111] border border-outline-variant/20 rounded-2xl p-6 pro-hover">
+                    <p class="text-4xl font-headline font-bold text-primary">98%</p>
+                    <p class="text-xs uppercase tracking-widest text-on-surface-variant mt-2">Guest Satisfaction</p>
+                </div>
+                <div class="bg-[#111] border border-outline-variant/20 rounded-2xl p-6 pro-hover">
+                    <p class="text-4xl font-headline font-bold text-primary">24/7</p>
+                    <p class="text-xs uppercase tracking-widest text-on-surface-variant mt-2">Response Coverage</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-8 md:px-20 py-20 reveal reveal-delay-3">
+            <h2 class="text-4xl font-headline font-bold uppercase mb-10">How Ignite Works</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="p-8 rounded-2xl border border-outline-variant/20 bg-surface-container-low pro-hover">
+                    <p class="text-sm text-primary uppercase tracking-widest mb-2">Step 01</p>
+                    <h3 class="text-2xl font-headline font-bold uppercase mb-3">Discover</h3>
+                    <p class="text-on-surface-variant">Browse curated listings with clear photos, amenities, and locality details.</p>
+                </div>
+                <div class="p-8 rounded-2xl border border-outline-variant/20 bg-surface-container-low pro-hover">
+                    <p class="text-sm text-primary uppercase tracking-widest mb-2">Step 02</p>
+                    <h3 class="text-2xl font-headline font-bold uppercase mb-3">Validate</h3>
+                    <p class="text-on-surface-variant">Compare monthly costs, policies, and room standards before you commit.</p>
+                </div>
+                <div class="p-8 rounded-2xl border border-outline-variant/20 bg-surface-container-low pro-hover">
+                    <p class="text-sm text-primary uppercase tracking-widest mb-2">Step 03</p>
+                    <h3 class="text-2xl font-headline font-bold uppercase mb-3">Move In</h3>
+                    <p class="text-on-surface-variant">Secure your space and settle into a better daily living experience.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-8 md:px-20 pb-24 reveal reveal-delay-3">
+            <div class="rounded-3xl border border-outline-variant/20 bg-surface-container-low p-10 md:p-14 pro-hover">
+                <p class="text-primary text-xs tracking-[0.2em] uppercase mb-3">Founder Note</p>
+                <h2 class="text-3xl md:text-4xl font-headline font-bold uppercase mb-4">Quality Is Not A Premium Feature</h2>
+                <p class="text-on-surface-variant leading-relaxed max-w-4xl">We built Ignite to remove uncertainty from hostel search. Every design and product decision comes from one principle: users should feel confident before they pay, not after they regret. That is why our roadmap prioritizes trust tooling, transparency, and operational excellence over hype.</p>
+                <div class="mt-8 flex flex-wrap gap-4">
+                    <a href="listings.html" class="bg-primary-container text-[#390c00] px-7 py-3 rounded-full text-sm font-bold uppercase tracking-wider">Explore Listings</a>
+                    <a href="contact.html" class="border border-outline-variant/30 px-7 py-3 rounded-full text-sm font-bold uppercase tracking-wider">Talk To Team</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#131313] border-t border-outline-variant/20">
+        <div class="px-8 md:px-20 py-12 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div>
+                <img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
+                <p class="text-xs text-on-surface-variant uppercase tracking-widest mt-2">To the Future.</p>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-8 uppercase text-xs tracking-widest">
+                <a href="listings.html" class="text-primary">Explore</a>
+                <a href="owner-auth.html" class="text-on-surface-variant hover:text-primary">Host</a>
+                <a href="terms.html" class="text-on-surface-variant hover:text-primary">Terms</a>
+                <a href="about.html" class="text-on-surface-variant hover:text-primary">About</a>
+                <a href="contact.html" class="text-on-surface-variant hover:text-primary">Contact</a>
+                <a href="contact.html" class="text-on-surface-variant hover:text-primary">Support</a>
+            </nav>
+            <p class="text-xs text-on-surface-variant uppercase tracking-widest text-center md:text-right">© 2026 Ignite Hostel Marketplace</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const mobileBtn = document.getElementById("mobile-menu-btn");
+            const mobileOverlay = document.getElementById("mobile-menu-overlay");
+            const mobileClose = document.getElementById("mobile-menu-close");
+            const setMenuOpen = (open) => {
+                if (!mobileOverlay || !mobileBtn) return;
+                mobileOverlay.classList.toggle("is-open", open);
+                mobileBtn.setAttribute("aria-expanded", String(open));
+                document.body.style.overflow = open ? "hidden" : "";
+            };
+            if (mobileBtn && mobileOverlay) {
+                mobileBtn.addEventListener("click", () => setMenuOpen(!mobileOverlay.classList.contains("is-open")));
+            }
+            if (mobileClose) {
+                mobileClose.addEventListener("click", () => setMenuOpen(false));
+            }
+            if (mobileOverlay) {
+                mobileOverlay.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenuOpen(false)));
+            }
+        });
+    </script>
+</body>
+</html>

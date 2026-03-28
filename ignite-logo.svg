@@ -1,0 +1,20 @@
+<svg width="220" height="64" viewBox="0 0 220 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="igniteGrad" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF6B35"/>
+      <stop offset="1" stop-color="#FFB59D"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="#111111" stroke="#594139"/>
+  <path d="M20 45L30.5 19H37.5L27 45H20Z" fill="url(#igniteGrad)"/>
+  <path d="M35 45L43.5 27H50L41.5 45H35Z" fill="#FFB59D"/>
+  <circle cx="44.5" cy="20.5" r="3.5" fill="#FF6B35"/>
+  <g fill="#FFB59D">
+    <path d="M78 23H83.2V44H78V23Z"/>
+    <path d="M88 23H93.4L101 36.1V23H106V44H101.5L93 30.2V44H88V23Z"/>
+    <path d="M111 23H116.2V44H111V23Z"/>
+    <path d="M120 23H137V27.4H131V44H125.8V27.4H120V23Z"/>
+    <path d="M141 23H146.2V44H141V23Z"/>
+    <path d="M151 23H167.4V27.3H156.2V31.4H166.1V35.5H156.2V39.7H167.8V44H151V23Z"/>
+  </g>
+</svg>

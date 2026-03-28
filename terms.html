@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Ignite Terms of Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#131313",
+                        surface: "#131313",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-high": "#2a2a2a",
+                        primary: "#ffb59d",
+                        "primary-container": "#ff6b35",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#e1bfb5",
+                        "outline-variant": "#594139"
+                    },
+                    fontFamily: {
+                        headline: ["Space Grotesk"],
+                        body: ["Manrope"]
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal {
+            animation: fadeSlideUp 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .reveal-delay-1 { animation-delay: 80ms; }
+        .reveal-delay-2 { animation-delay: 160ms; }
+        .pro-hover {
+            transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease, border-color 300ms ease;
+        }
+        .pro-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.34);
+            border-color: rgba(255, 107, 53, 0.45);
+        }
+        .mobile-menu-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: opacity 220ms ease, transform 220ms ease;
+        }
+        .mobile-menu-overlay.is-open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body">
+    <header class="fixed top-0 w-full z-50 bg-[#131313]/70 backdrop-blur-md border-b border-outline-variant/20">
+        <div class="h-20 px-8 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="inline-flex items-center gap-3">
+                    <img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
+                </a>
+                <nav class="hidden md:flex gap-8 uppercase text-sm tracking-wider font-headline font-semibold">
+                    <a href="index.html" class="text-on-surface-variant hover:text-primary">Home</a>
+                    <a href="listings.html" class="text-on-surface-variant hover:text-primary">Explore</a>
+                    <a href="about.html" class="text-on-surface-variant hover:text-primary">About</a>
+                    <a href="contact.html" class="text-on-surface-variant hover:text-primary">Contact</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="owner-auth.html" class="hidden sm:inline-block bg-primary-container text-[#390c00] px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider">Host Login</a>
+                <button id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-outline-variant/30" aria-label="Open menu" aria-expanded="false">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 z-40 bg-background/95 backdrop-blur-xl md:hidden">
+        <div class="h-full pt-24 px-8 pb-10 flex flex-col justify-between">
+            <div class="space-y-5">
+                <a href="index.html" class="block text-3xl font-headline font-bold uppercase">Home</a>
+                <a href="listings.html" class="block text-3xl font-headline font-bold uppercase">Explore</a>
+                <a href="about.html" class="block text-3xl font-headline font-bold uppercase">About</a>
+                <a href="contact.html" class="block text-3xl font-headline font-bold uppercase">Contact</a>
+                <a href="owner-auth.html" class="block text-3xl font-headline font-bold uppercase">Host</a>
+            </div>
+            <button id="mobile-menu-close" class="w-full border border-outline-variant/30 rounded-full py-3 uppercase text-sm tracking-widest">Close Menu</button>
+        </div>
+    </div>
+
+    <main class="pt-24">
+        <section class="px-8 md:px-20 py-16 border-b border-outline-variant/20 reveal">
+            <p class="text-primary uppercase tracking-[0.2em] text-xs mb-3">Legal</p>
+            <h1 class="text-5xl md:text-6xl font-headline font-bold uppercase mb-5">Terms Of Service</h1>
+            <p class="text-on-surface-variant max-w-4xl">Effective date: March 27, 2026. These Terms govern your access to and use of Ignite services, including browsing listings, inquiries, account use, and owner listing management.</p>
+            <div class="mt-8 bg-surface-container-low border border-outline-variant/25 rounded-2xl px-5 py-4 inline-flex items-center gap-4 pro-hover">
+                <img src="./ignite-logo.svg" alt="Ignite professional logo" class="h-10 w-auto"/>
+                <p class="text-xs uppercase tracking-widest text-on-surface-variant">Transparent terms, professional standards</p>
+            </div>
+        </section>
+
+        <section class="px-8 md:px-20 py-14 grid lg:grid-cols-4 gap-8 reveal reveal-delay-1">
+            <aside class="lg:col-span-1 lg:sticky lg:top-28 h-fit bg-surface-container-low border border-outline-variant/20 rounded-2xl p-6 pro-hover">
+                <p class="text-xs uppercase tracking-widest text-primary mb-4">On This Page</p>
+                <nav class="space-y-3 text-sm">
+                    <a class="block text-on-surface-variant hover:text-primary" href="#acceptance">1. Acceptance</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#eligibility">2. Eligibility</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#accounts">3. Accounts</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#listing-info">4. Listing Information</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#payments">5. Payments</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#conduct">6. User Conduct</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#ip">7. Intellectual Property</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#liability">8. Limitation of Liability</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#termination">9. Termination</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#law">10. Governing Law</a>
+                    <a class="block text-on-surface-variant hover:text-primary" href="#contact-legal">11. Contact</a>
+                </nav>
+            </aside>
+
+            <article class="lg:col-span-3 space-y-8 text-on-surface-variant leading-relaxed reveal reveal-delay-2">
+                <section id="acceptance" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">1. Acceptance of Terms</h2>
+                    <p>By accessing or using Ignite, you agree to these Terms and our operating policies. If you do not agree, do not use the platform.</p>
+                </section>
+                <section id="eligibility" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">2. Eligibility</h2>
+                    <p>You must be legally capable of entering contracts under applicable law. For users under majority age, lawful guardian consent is required.</p>
+                </section>
+                <section id="accounts" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">3. Accounts and Security</h2>
+                    <p>You are responsible for account credentials and all actions performed through your account. Notify us immediately about unauthorized use or security concerns.</p>
+                </section>
+                <section id="listing-info" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">4. Listing Information and Availability</h2>
+                    <p>Ignite provides listing discovery and operational tooling. Pricing, availability, and specific accommodation conditions can change and should be verified before booking decisions.</p>
+                </section>
+                <section id="payments" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">5. Payments, Cancellations, and Refunds</h2>
+                    <p>Payment terms, cancellation windows, and refund criteria may vary by listing and owner policy. You agree to review these terms before confirmation.</p>
+                </section>
+                <section id="conduct" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">6. User Conduct</h2>
+                    <p>You agree not to misuse the platform, submit false information, harass others, violate laws, or interfere with service availability and security protections.</p>
+                </section>
+                <section id="ip" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">7. Intellectual Property</h2>
+                    <p>Platform design, branding, and software assets are protected by applicable intellectual property laws. Unauthorized reproduction or reverse engineering is prohibited.</p>
+                </section>
+                <section id="liability" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">8. Disclaimer and Limitation of Liability</h2>
+                    <p>Services are provided on an as-available basis. To the extent permitted by law, Ignite is not liable for indirect or consequential losses arising from platform use.</p>
+                </section>
+                <section id="termination" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">9. Suspension and Termination</h2>
+                    <p>We may suspend or terminate access for policy violations, fraudulent behavior, misuse, or risks to users and service integrity.</p>
+                </section>
+                <section id="law" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">10. Governing Law and Disputes</h2>
+                    <p>These Terms are governed by laws of India. Subject to mandatory legal rights, disputes fall under courts located in Bengaluru, Karnataka.</p>
+                </section>
+                <section id="contact-legal" class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-7 pro-hover">
+                    <h2 class="text-2xl font-headline font-bold uppercase text-on-surface mb-3">11. Contact Information</h2>
+                    <p>For legal notices or term-related questions, email <a href="mailto:legal@ignitehomes.in" class="text-primary">legal@ignitehomes.in</a> or use our <a href="contact.html" class="text-primary">Contact page</a>.</p>
+                </section>
+            </article>
+        </section>
+    </main>
+
+    <footer class="bg-[#131313] border-t border-outline-variant/20">
+        <div class="px-8 md:px-20 py-12 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div>
+                <img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
+                <p class="text-xs text-on-surface-variant uppercase tracking-widest mt-2">To the Future.</p>
+            </div>
+            <nav class="flex flex-wrap justify-center gap-8 uppercase text-xs tracking-widest">
+                <a href="listings.html" class="text-primary">Explore</a>
+                <a href="owner-auth.html" class="text-on-surface-variant hover:text-primary">Host</a>
+                <a href="terms.html" class="text-on-surface-variant hover:text-primary">Terms</a>
+                <a href="about.html" class="text-on-surface-variant hover:text-primary">About</a>
+                <a href="contact.html" class="text-on-surface-variant hover:text-primary">Contact</a>
+                <a href="contact.html" class="text-on-surface-variant hover:text-primary">Support</a>
+            </nav>
+            <p class="text-xs text-on-surface-variant uppercase tracking-widest text-center md:text-right">© 2026 Ignite Hostel Marketplace</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const mobileBtn = document.getElementById("mobile-menu-btn");
+            const mobileOverlay = document.getElementById("mobile-menu-overlay");
+            const mobileClose = document.getElementById("mobile-menu-close");
+            const setMenuOpen = (open) => {
+                if (!mobileOverlay || !mobileBtn) return;
+                mobileOverlay.classList.toggle("is-open", open);
+                mobileBtn.setAttribute("aria-expanded", String(open));
+                document.body.style.overflow = open ? "hidden" : "";
+            };
+            if (mobileBtn && mobileOverlay) {
+                mobileBtn.addEventListener("click", () => setMenuOpen(!mobileOverlay.classList.contains("is-open")));
+            }
+            if (mobileClose) {
+                mobileClose.addEventListener("click", () => setMenuOpen(false));
+            }
+            if (mobileOverlay) {
+                mobileOverlay.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenuOpen(false)));
+            }
+        });
+    </script>
+</body>
+</html>

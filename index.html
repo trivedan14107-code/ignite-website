@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#131313",
+              "primary-container": "#ff6b35",
+              "secondary-container": "#ffa504",
+              "on-surface": "#e5e2e1",
+              "surface-container-high": "#2a2a2a",
+              "inverse-surface": "#e5e2e1",
+              "surface": "#131313",
+              "primary": "#ffb59d",
+              "outline": "#a98a80",
+              "primary-fixed": "#ffdbd0",
+              "surface-container": "#201f1f",
+              "on-surface-variant": "#e1bfb5",
+              "surface-bright": "#3a3939",
+              "surface-container-lowest": "#0e0e0e",
+              "on-secondary-fixed-variant": "#653e00",
+              "error": "#ffb4ab",
+              "secondary": "#ffcb8d",
+              "on-secondary-fixed": "#2a1700",
+              "on-secondary": "#462a00",
+              "on-error": "#690005",
+              "on-primary-container": "#5f1900",
+              "on-error-container": "#ffdad6",
+              "tertiary": "#59d5fb",
+              "on-tertiary-fixed": "#001f28",
+              "surface-container-highest": "#353534",
+              "tertiary-container": "#00a7cb",
+              "inverse-primary": "#ab3500",
+              "outline-variant": "#594139",
+              "surface-dim": "#131313",
+              "error-container": "#93000a",
+              "tertiary-fixed-dim": "#59d5fb",
+              "secondary-fixed": "#ffddb7",
+              "on-tertiary": "#003543",
+              "surface-tint": "#ffb59d",
+              "inverse-on-surface": "#313030",
+              "primary-fixed-dim": "#ffb59d",
+              "tertiary-fixed": "#b5ebff",
+              "on-primary-fixed": "#390c00",
+              "on-background": "#e5e2e1",
+              "surface-container-low": "#1c1b1b",
+              "on-primary-fixed-variant": "#832600",
+              "on-tertiary-fixed-variant": "#004e60",
+              "on-primary": "#5d1900",
+              "secondary-fixed-dim": "#ffb95c",
+              "on-secondary-container": "#684100",
+              "on-tertiary-container": "#003744",
+              "surface-variant": "#353534"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #ff6b35 0%, #ffb59d 100%);
+        }
+        .noir-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff6b35;
+        }
+        .mobile-menu-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: opacity 220ms ease, transform 220ms ease;
+        }
+        .mobile-menu-overlay.is-open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .toast {
+            transform: translateY(18px);
+            opacity: 0;
+            transition: opacity 260ms ease, transform 260ms ease;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-[#131313]/60 backdrop-blur-md shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300">
+<div class="flex justify-between items-center px-8 h-20 w-full max-w-none">
+<div class="flex items-center gap-8">
+<a class="inline-flex items-center" href="index.html">
+<img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
+</a>
+<nav class="hidden md:flex gap-8 items-center">
+    <a class="text-[#ffb59d] border-b-2 border-[#ff6b35] pb-1 font-['Space_Grotesk'] font-bold tracking-[0.05em] uppercase text-sm" href="index.html">Home</a>
+    <a class="text-[#e5e2e1] opacity-70 hover:text-[#ffb59d] transition-all duration-200 ease-out font-['Space_Grotesk'] font-bold tracking-[0.05em] uppercase text-sm" href="listings.html">Explore</a>
+    <a class="text-[#e5e2e1] opacity-70 hover:text-[#ffb59d] transition-all duration-200 ease-out font-['Space_Grotesk'] font-bold tracking-[0.05em] uppercase text-sm" href="listings.html">Browse PG's</a>
+    <a class="text-[#e5e2e1] opacity-70 hover:text-[#ffb59d] transition-all duration-200 ease-out font-['Space_Grotesk'] font-bold tracking-[0.05em] uppercase text-sm" href="about.html">About</a>
+    <a class="text-[#e5e2e1] opacity-70 hover:text-[#ffb59d] transition-all duration-200 ease-out font-['Space_Grotesk'] font-bold tracking-[0.05em] uppercase text-sm" href="contact.html">Contact</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden sm:block">
+<input class="bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary-container text-sm px-6 py-2 rounded-full w-64 transition-all" placeholder="Search destinations..." type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+</div>
+<a href="owner-auth.html" class="scale-95 active:scale-90 transition-transform bg-primary-container text-on-primary-fixed font-bold py-2.5 px-6 rounded-full text-sm font-headline tracking-wider uppercase inline-block text-center shadow-[0_4px_15px_rgba(255,107,53,0.3)] hover:scale-100">
+    Sign In
+</a>
+<button id="mobile-menu-btn" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-outline-variant/30 text-on-surface" aria-label="Open menu" aria-expanded="false">
+    <span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 z-40 bg-background/95 backdrop-blur-xl md:hidden">
+    <div class="h-full pt-24 px-8 pb-10 flex flex-col justify-between">
+        <div class="space-y-5">
+            <a href="index.html" class="block text-3xl font-headline font-bold uppercase">Home</a>
+            <a href="listings.html" class="block text-3xl font-headline font-bold uppercase">Explore</a>
+            <a href="about.html" class="block text-3xl font-headline font-bold uppercase">About</a>
+            <a href="contact.html" class="block text-3xl font-headline font-bold uppercase">Contact</a>
+            <a href="owner-auth.html" class="block text-3xl font-headline font-bold uppercase text-primary">Host</a>
+        </div>
+        <button id="mobile-menu-close" class="w-full border border-outline-variant/30 rounded-full py-3 uppercase text-sm tracking-widest">Close Menu</button>
+    </div>
+</div>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[90vh] flex items-center px-8 md:px-20 py-24 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent z-10"></div>
+<img class="w-full h-full object-cover grayscale-[0.2] opacity-60" data-alt="Modern dark luxury hostel lounge with warm ambient lighting, futuristic furniture, and floor to ceiling windows overlooking a neon city skyline at night" src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=2069&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
+</div>
+<div class="relative z-20 max-w-4xl">
+<div class="mb-6 flex items-center gap-3">
+<span class="w-12 h-[1px] bg-primary-container"></span>
+<span class="text-primary font-label tracking-[0.2em] text-xs uppercase">To the Future</span>
+</div>
+<h1 class="text-6xl md:text-8xl font-headline font-bold uppercase tracking-tight leading-[0.9] mb-8">
+                    Find Your <br/>
+<span class="text-transparent bg-clip-text kinetic-gradient">Sanctuary.</span>
+</h1>
+<p class="text-on-surface-variant text-lg md:text-xl max-w-xl mb-12 leading-relaxed">
+                    Elevated living for the global nomad. Experience curated hostel spaces designed for focus, connection, and the professional spirit.
+                </p>
+<div class="flex flex-wrap gap-4">
+<a href="listings.html" class="kinetic-gradient text-on-primary-fixed px-10 py-5 rounded-full font-headline font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(255,107,53,0.3)] inline-block">
+                        Explore Listings
+                    </a>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-50">
+<span class="text-[0.6rem] font-label uppercase tracking-widest">Scroll to discover</span>
+<div class="w-[1px] h-12 bg-gradient-to-b from-primary-container to-transparent"></div>
+</div>
+</section>
+<!-- Bento Grid Categories -->
+<section class="px-8 md:px-20 py-32 bg-surface-container-low">
+<div class="mb-16">
+<h2 class="text-4xl font-headline font-bold uppercase tracking-tight mb-4">Curated Verticals</h2>
+<div class="w-20 h-1 bg-primary-container"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[600px]">
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-40" data-alt="Sleek minimalist co-working space with ergonomic chairs, warm wood textures, and soft diffused lighting for focused professional work" src="https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?q=80&w=2070&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-8 left-8">
+<span class="bg-primary-container/20 text-primary-fixed text-[0.6rem] px-3 py-1 rounded-full border border-primary-container/30 uppercase tracking-widest mb-4 inline-block">Work-Ready</span>
+<h3 class="text-3xl font-headline font-bold uppercase">Digital Nomads</h3>
+<p class="text-on-surface-variant max-w-md mt-2">Ultra-high-speed fiber, silent zones, and ergonomic stations.</p>
+</div>
+</div>
+<div class="md:col-span-4 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-40" data-alt="Rooftop socializing area at twilight with ambient fairy lights, comfortable lounge seating, and a modern fire pit" src="https://images.unsplash.com/photo-1551525212-a1dc18a40781?q=80&w=2069&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-8 left-8">
+<span class="bg-tertiary/20 text-tertiary text-[0.6rem] px-3 py-1 rounded-full border border-tertiary/30 uppercase tracking-widest mb-4 inline-block">Connected</span>
+<h3 class="text-2xl font-headline font-bold uppercase">Social Hubs</h3>
+</div>
+</div>
+<div class="md:col-span-4 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-40" data-alt="Luxury boutique hostel bedroom with high-end linens, mood lighting, and integrated smart home technology features" src="https://images.unsplash.com/photo-1614607242094-b1b2cb7ce84b?q=80&w=2034&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-8 left-8">
+<h3 class="text-2xl font-headline font-bold uppercase">Boutique Stays</h3>
+</div>
+</div>
+<div class="md:col-span-8 group relative overflow-hidden rounded-xl bg-surface-container-high cursor-pointer transition-all duration-500">
+<div class="absolute inset-0 kinetic-gradient opacity-5"></div>
+<div class="h-full flex flex-col justify-center px-12">
+<h3 class="text-4xl font-headline font-bold uppercase mb-4">The Ignite Philosophy</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed max-w-xl">
+                            We don't just provide a bed. We provide a platform for growth, a community of peers, and the infrastructure for your future. No lines, no boundaries, just progress.
+                        </p>
+<div class="mt-8 flex gap-4">
+<span class="material-symbols-outlined text-primary text-4xl">bolt</span>
+<span class="material-symbols-outlined text-primary text-4xl">travel_explore</span>
+<span class="material-symbols-outlined text-primary text-4xl">token</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Listings -->
+<section class="px-8 md:px-20 py-32 bg-surface">
+<div class="flex justify-between items-end mb-16">
+<div>
+<p class="text-primary font-label tracking-widest uppercase text-xs mb-2">Featured Destinations</p>
+<h2 class="text-5xl font-headline font-bold uppercase tracking-tight">The Core Collection</h2>
+</div>
+<a href="listings.html" class="text-on-surface hover:text-primary transition-colors flex items-center gap-2 font-headline font-bold uppercase tracking-wider text-sm">
+                    View All Spaces <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-10" id="featured-grid">
+<!-- Dynamic Featured Listings -->
+</div>
+</section>
+        <!-- Why Use Ignite Section -->
+        <section class="px-8 md:px-20 py-32 bg-[#0F0F0F] relative overflow-hidden border-t border-outline-variant/10">
+            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3"></div>
+            <div class="mb-16 max-w-2xl">
+                <p class="text-primary font-label tracking-widest uppercase text-xs mb-2">The Ignite Advantage</p>
+                <h2 class="text-4xl md:text-5xl font-headline font-bold uppercase tracking-tight mb-6">Why Use Ignite?</h2>
+                <div class="w-20 h-1 bg-primary-container"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+                <!-- Feature 1 -->
+                <div class="bg-surface-container-low p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary">verified</span>
+                    </div>
+                    <h3 class="text-xl font-headline font-bold uppercase mb-3 text-on-surface">Verified Luxury</h3>
+                    <p class="text-on-surface-variant text-sm">Every space on Ignite is hand-picked and physically verified for quality, safety, and modern amenities.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="bg-surface-container-low p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary">speed</span>
+                    </div>
+                    <h3 class="text-xl font-headline font-bold uppercase mb-3 text-on-surface">Kinetic Booking</h3>
+                    <p class="text-on-surface-variant text-sm">Say goodbye to endless paperwork. Secure your sanctuary with 1-click verified bookings.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="bg-surface-container-low p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary">group</span>
+                    </div>
+                    <h3 class="text-xl font-headline font-bold uppercase mb-3 text-on-surface">Global Network</h3>
+                    <p class="text-on-surface-variant text-sm">Live among ambitious professionals, creators, and digital nomads building the future.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="bg-surface-container-low p-8 rounded-2xl hover:-translate-y-2 transition-transform duration-300">
+                    <div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-primary">shield</span>
+                    </div>
+                    <h3 class="text-xl font-headline font-bold uppercase mb-3 text-on-surface">Absolute Safety</h3>
+                    <p class="text-on-surface-variant text-sm">24/7 security standards, transparent house rules, and community moderation built-in.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Plans -->
+        <section class="px-8 md:px-20 py-32 bg-surface-container-low relative border-t border-baseline/10">
+            <div class="text-center mb-20 max-w-3xl mx-auto">
+                <p class="text-primary font-label tracking-widest uppercase text-xs mb-2">For Hostel Owners</p>
+                <h2 class="text-4xl md:text-5xl font-headline font-bold uppercase tracking-tight mb-6">Scale Your Sanctuary</h2>
+                <p class="text-on-surface-variant text-lg">Partner with Ignite and get your premium spaces in front of verified, high-intent tenants.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Starter Plan -->
+                <div class="bg-surface p-10 rounded-3xl border border-outline-variant/20 flex flex-col hover:border-primary-container/50 transition-colors">
+                    <h3 class="text-2xl font-headline font-bold uppercase mb-2">Starter</h3>
+                    <p class="text-on-surface-variant text-sm mb-6 pb-6 border-b border-outline-variant/20">Perfect for single flagship locations.</p>
+                    <div class="mb-8">
+                        <span class="text-5xl font-bold font-headline">₹0</span><span class="text-on-surface-variant">/mo</span>
+                    </div>
+                    <ul class="flex-grow space-y-4 mb-8">
+                        <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Up to 2 Listings</li>
+                        <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Basic Analytics</li>
+                        <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Standard Support</li>
+                    </ul>
+                    <a href="owner-auth.html" class="w-full text-center border border-outline-variant/30 text-on-surface py-3 rounded-full font-bold uppercase tracking-wider hover:bg-surface-container-highest transition-colors text-sm">Start Free Trial</a>
+                </div>
+                <!-- Pro Plan (Popular) -->
+                <div class="bg-[#1A1A1A] p-10 rounded-3xl border-2 border-primary-container relative flex flex-col transform md:-translate-y-4 shadow-[0_20px_40px_rgba(255,107,53,0.15)] hover:scale-105 transition-transform duration-300">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary-container text-on-primary-fixed px-4 py-1 rounded-full text-[0.6rem] font-bold tracking-widest uppercase">Most Popular</div>
+                    <h3 class="text-2xl font-headline font-bold uppercase mb-2">Pro Partner</h3>
+                    <p class="text-on-surface-variant text-sm mb-6 pb-6 border-b border-outline-variant/20">For growing hostel empires.</p>
+                    <div class="mb-8 items-end flex">
+                        <span class="text-5xl font-bold font-headline text-primary">₹399</span><span class="text-on-surface-variant mb-1">/mo</span>
+                    </div>
+                    <ul class="flex-grow space-y-4 mb-8">
+                        <li class="flex items-center gap-3 text-sm text-on-surface"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Up to 10 Listings</li>
+                        <li class="flex items-center gap-3 text-sm text-on-surface"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Advanced Analytics & Insights</li>
+                        <li class="flex items-center gap-3 text-sm text-on-surface"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Priority 24/7 Support</li>
+                        <li class="flex items-center gap-3 text-sm text-on-surface"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Featured Search Placement</li>
+                    </ul>
+                    <a href="owner-auth.html" class="w-full text-center bg-primary-container text-on-primary-fixed py-3 rounded-full font-bold uppercase tracking-wider hover:scale-105 active:scale-95 transition-transform text-sm shadow-[0_10px_20px_rgba(255,107,53,0.2)]">Go Pro</a>
+                </div>
+                <!-- Enterprise Plan -->
+                <div class="bg-surface p-10 rounded-3xl border border-outline-variant/20 flex flex-col hover:border-primary-container/50 transition-colors">
+                    <h3 class="text-2xl font-headline font-bold uppercase mb-2">Enterprise</h3>
+                    <p class="text-on-surface-variant text-sm mb-6 pb-6 border-b border-outline-variant/20">National scale franchise operations.</p>
+                    <div class="mb-8">
+                        <span class="text-5xl font-bold font-headline">₹499</span><span class="text-on-surface-variant">/mo</span>
+                    </div>
+                    <ul class="flex-grow space-y-4 mb-8">
+                        <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Unlimited Listings</li>
+                        <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Custom API Connectivity</li>
+                        <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Dedicated Account Manager</li>
+                    </ul>
+                    <a href="owner-auth.html" class="w-full text-center border border-outline-variant/30 text-on-surface py-3 rounded-full font-bold uppercase tracking-wider hover:bg-surface-container-highest transition-colors text-sm">Contact Sales</a>
+                </div>
+            </div>
+        </section>
+
+<!-- Public Reviews System -->
+<section class="px-8 md:px-20 py-32 bg-surface-container-lowest border-t border-outline-variant/10">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-4xl font-headline font-bold uppercase mb-12 text-center tracking-tight">Guest Experiences</h2>
+        
+        <!-- Live Reviews Feed -->
+        <div id="reviews-feed" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+            <div class="p-10 text-center col-span-full border border-outline-variant/10 rounded-3xl">
+                <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-4 hidden md:block animate-spin">refresh</span>
+                <p class="text-on-surface-variant font-bold tracking-widest text-sm uppercase">Loading guest reviews...</p>
+            </div>
+        </div>
+
+        <!-- Add Review Form -->
+        <div class="bg-surface border border-outline-variant/20 rounded-3xl p-8 md:p-12 shadow-[0_20px_40px_rgba(0,0,0,0.5)] relative overflow-hidden">
+            <div class="absolute inset-0 kinetic-gradient opacity-5"></div>
+            <div class="relative z-10">
+                <h3 class="text-2xl font-headline font-bold uppercase mb-6 tracking-tight">Leave a Review</h3>
+                <form id="review-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Your Name</label>
+                            <input id="review-name" required class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-3 text-sm focus:ring-primary focus:border-primary text-on-surface" type="text" placeholder="John Doe"/>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Rating</label>
+                            <select id="review-rating" required class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-3 text-sm focus:ring-primary focus:border-primary text-on-surface">
+                                <option value="5">⭐⭐⭐⭐⭐ Excellent (5)</option>
+                                <option value="4">⭐⭐⭐⭐ Great (4)</option>
+                                <option value="3">⭐⭐⭐ Good (3)</option>
+                                <option value="2">⭐⭐ Fair (2)</option>
+                                <option value="1">⭐ Poor (1)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Your Experience</label>
+                        <textarea id="review-comment" required rows="3" class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-3 text-sm focus:ring-primary focus:border-primary text-on-surface" placeholder="Tell us about your stay..."></textarea>
+                    </div>
+                    <button type="submit" id="btn-submit-review" class="bg-primary-container text-on-primary-fixed font-bold px-8 py-3 rounded-full uppercase tracking-widest hover:scale-[1.02] transition-transform text-sm block w-full md:w-auto text-center float-right select-none shadow-[0_5px_15px_rgba(255,107,53,0.3)]">
+                        Post Review
+                    </button>
+                    <div class="clear-both"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="bg-[#131313] w-full border-t border-[#594139]/15">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full">
+<div class="mb-10 md:mb-0">
+<img src="./ignite-logo.svg" alt="Ignite logo" class="h-10 w-auto"/>
+<p class="text-[#e5e2e1]/40 text-[0.6rem] mt-2 font-label tracking-widest uppercase">To the Future.</p>
+</div>
+<nav class="flex flex-wrap justify-center gap-12 mb-10 md:mb-0">
+<a class="text-[#ffb59d] font-bold font-['Manrope'] text-[0.6875rem] tracking-[0.1em] uppercase hover:text-[#ffb59d] transition-colors" href="listings.html">Explore</a>
+<a class="text-[#e5e2e1]/60 font-['Manrope'] text-[0.6875rem] tracking-[0.1em] uppercase hover:text-[#ffb59d] transition-colors" href="owner-auth.html">Host</a>
+<a class="text-[#e5e2e1]/60 font-['Manrope'] text-[0.6875rem] tracking-[0.1em] uppercase hover:text-[#ffb59d] transition-colors" href="terms.html">Terms</a>
+<a class="text-[#e5e2e1]/60 font-['Manrope'] text-[0.6875rem] tracking-[0.1em] uppercase hover:text-[#ffb59d] transition-colors" href="about.html">About</a>
+<a class="text-[#e5e2e1]/60 font-['Manrope'] text-[0.6875rem] tracking-[0.1em] uppercase hover:text-[#ffb59d] transition-colors" href="contact.html">Contact</a>
+<a class="text-[#e5e2e1]/60 font-['Manrope'] text-[0.6875rem] tracking-[0.1em] uppercase hover:text-[#ffb59d] transition-colors" href="contact.html">Support</a>
+</nav>
+<div class="text-[#e5e2e1]/40 font-['Manrope'] text-[0.6875rem] tracking-[0.1em] uppercase text-center md:text-right">
+                © 2026 IGNITE HOSTEL MARKETPLACE. <br class="hidden md:block"/> ALL RIGHTS RESERVED.
+            </div>
+</div>
+</footer>
+<div id="toast-container" class="fixed bottom-6 right-6 z-[60] space-y-3"></div>
+<!-- FAB Suppression Logic: Not rendering FAB on Homepage as per design guidelines -->
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="module" src="./js/supabase-client.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileClose = document.getElementById('mobile-menu-close');
+        const toastContainer = document.getElementById('toast-container');
+
+        const setMenuOpen = (open) => {
+            if (!mobileOverlay || !mobileBtn) return;
+            mobileOverlay.classList.toggle('is-open', open);
+            mobileBtn.setAttribute('aria-expanded', String(open));
+            document.body.style.overflow = open ? 'hidden' : '';
+        };
+
+        if (mobileBtn && mobileOverlay) {
+            mobileBtn.addEventListener('click', () => setMenuOpen(!mobileOverlay.classList.contains('is-open')));
+        }
+        if (mobileClose) {
+            mobileClose.addEventListener('click', () => setMenuOpen(false));
+        }
+        if (mobileOverlay) {
+            mobileOverlay.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', () => setMenuOpen(false));
+            });
+        }
+
+        const showToast = (message, kind = 'success') => {
+            if (!toastContainer) return;
+            const toast = document.createElement('div');
+            const tone = kind === 'error'
+                ? 'bg-[#3a0f0f] border-[#8a3030] text-[#ffd7d7]'
+                : 'bg-[#1c2f1b] border-[#3f7a40] text-[#d8ffd8]';
+            toast.className = `toast min-w-[260px] max-w-sm border rounded-xl px-4 py-3 shadow-xl ${tone}`;
+            toast.innerHTML = `<p class="text-sm font-semibold tracking-wide">${message}</p>`;
+            toastContainer.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 260);
+            }, 2600);
+        };
+
+        const grid = document.getElementById('featured-grid');
+        if(!grid || !window.supabaseClient) return;
+        
+        grid.innerHTML = '<div class="col-span-full py-10 text-center"><p class="text-on-surface-variant font-bold tracking-widest uppercase text-sm">Loading Featured Sanctuaries...</p></div>';
+        
+        const { data: hostels, error } = await window.supabaseClient
+            .from('hostels')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(3);
+            
+        if (error) {
+            grid.innerHTML = `<div class="col-span-full py-10 text-center text-error font-bold">Error loading listings: ${error.message}</div>`;
+            return;
+        }
+        
+        if(!hostels || hostels.length === 0) {
+            grid.innerHTML = '<div class="col-span-full py-10 text-center text-on-surface-variant font-bold tracking-widest uppercase text-sm">No featured sanctuaries available.</div>';
+            return;
+        }
+        
+        grid.innerHTML = hostels.map((h, i) => {
+            const fallbackImage = './ignite-placeholder.svg';
+            const rawImage = (h.images && h.images.length > 0) ? h.images[0] : '';
+            const img = (typeof rawImage === 'string' && rawImage.trim().length > 0)
+                ? rawImage
+                : fallbackImage;
+            const amenities = Array.isArray(h.amenities) ? h.amenities : [];
+            const isCenterRound = i === 1 ? 'rounded-full' : 'rounded-[3rem]';
+            
+            return `
+            <div class="group cursor-pointer block" onclick="window.location.href='hostel-detail.html?id=${h.id}'">
+                <div class="relative overflow-hidden ${isCenterRound} aspect-[4/5] mb-6 bg-[#1A1A1A]">
+                    <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" src="${img}" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';"/>
+                    <div class="absolute top-6 left-6">
+                        <span class="bg-surface/80 noir-blur text-on-surface text-[0.6rem] px-3 py-1 rounded-full font-bold uppercase border border-outline-variant/30 capitalize">${h.type || 'Standard'}</span>
+                    </div>
+                    <div class="absolute top-6 right-6 bg-background/80 noir-blur px-4 py-2 rounded-full border border-outline-variant/20">
+                        <span class="text-secondary font-bold text-sm">₹${h.price_per_month}</span>
+                        <span class="text-on-surface-variant text-[0.6rem] uppercase tracking-tighter">/ mo</span>
+                    </div>
+                </div>
+                <div class="px-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="text-xl font-headline font-bold uppercase truncate">${h.name}</h4>
+                    </div>
+                    <p class="text-on-surface-variant text-sm mb-4 truncate capitalize">${(h.address||'').split(',')[0]} • ${h.city}</p>
+                    <div class="flex gap-2 flex-wrap">
+                        ${amenities.slice(0,2).map(a => `<span class="text-[0.6rem] border border-outline-variant/30 px-3 py-1 rounded-full uppercase text-on-surface-variant">${a}</span>`).join('')}
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Review System Logic
+        const reviewForm = document.getElementById('review-form');
+        const reviewsFeed = document.getElementById('reviews-feed');
+        
+        if(reviewForm && reviewsFeed) {
+            async function fetchReviews() {
+                const { data, error } = await window.supabaseClient.from('site_reviews').select('*').order('created_at', { ascending: false }).limit(4);
+                if(error) {
+                    if(error.code === '42P01' || error.code === 'PGRST205') {
+                        reviewsFeed.innerHTML = '<div class="col-span-full text-center text-on-surface-variant text-sm py-10 font-bold uppercase tracking-widest">Review system is warming up (table missing).</div>';
+                    } else {
+                        reviewsFeed.innerHTML = '<div class="col-span-full text-center text-error text-sm py-10">Error loading reviews: ' + error.message + '</div>';
+                    }
+                    return;
+                }
+                
+                if(!data || data.length === 0) {
+                    reviewsFeed.innerHTML = '<div class="col-span-full text-center text-on-surface-variant font-bold text-sm py-10 tracking-widest uppercase">No reviews yet. Be the first!</div>';
+                    return;
+                }
+                
+                reviewsFeed.innerHTML = data.map(r => `
+                    <div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/10 shadow-[0_4px_20px_rgba(0,0,0,0.2)] flex flex-col justify-between">
+                        <div>
+                            <div class="text-secondary text-sm mb-4">${'★'.repeat(r.rating || 5)}${'☆'.repeat(5 - (r.rating || 5))}</div>
+                            <p class="text-on-surface-variant italic mb-6">"${r.comment || ''}"</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-fixed flex items-center justify-center font-bold uppercase tracking-widest">${(r.name || 'G')[0]}</div>
+                            <div>
+                                <p class="text-sm font-bold uppercase tracking-wider">${r.name}</p>
+                                <p class="text-[0.6rem] text-on-surface-variant uppercase tracking-widest">${new Date(r.created_at).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            fetchReviews();
+            
+            reviewForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-submit-review');
+                const prevText = btn.textContent;
+                btn.textContent = "Posting...";
+                btn.disabled = true;
+                
+                const payload = {
+                    name: document.getElementById('review-name').value,
+                    rating: parseInt(document.getElementById('review-rating').value, 10),
+                    comment: document.getElementById('review-comment').value
+                };
+                
+                try {
+                    const { error } = await window.supabaseClient.from('site_reviews').insert([payload]);
+                    if(error) throw error;
+                    reviewForm.reset();
+                    showToast("Thank you for sharing your review.");
+                    fetchReviews();
+                } catch(err) {
+                    console.error("Review Error:", err);
+                    showToast("Review could not be submitted. Please try again.", "error");
+                } finally {
+                    btn.textContent = prevText;
+                    btn.disabled = false;
+                }
+            });
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Ignite - Neo-Tokyo Capsule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="./js/supabase-client.js"></script>
+    <script id="tailwind-config">
+        // [Existing config same as index]
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#131313",
+                        "primary-container": "#ff6b35",
+                        "secondary-container": "#ffa504",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "surface": "#131313",
+                        "primary": "#ffb59d",
+                        "outline-variant": "#594139",
+                        "surface-container": "#201f1f",
+                        "on-surface-variant": "#e1bfb5",
+                        "surface-bright": "#3a3939",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary": "#ffcb8d",
+                        "on-primary-fixed": "#390c00",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-variant": "#353534",
+                        "tertiary": "#59d5fb"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; vertical-align: middle; }
+        .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }
+        .kinetic-gradient { background: linear-gradient(135deg, #ff6b35 0%, #ffb59d 100%); }
+        .noir-blur { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff6b35; }
+        /* Lightbox transitions */
+        .lightbox-enter { opacity: 0; transform: scale(0.95); }
+        .lightbox-enter-active { opacity: 1; transform: scale(1); transition: opacity 300ms, transform 300ms; }
+        .lightbox-leave { opacity: 1; transform: scale(1); }
+        .lightbox-leave-active { opacity: 0; transform: scale(0.95); transition: opacity 300ms, transform 300ms; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container relative">
+
+    <!-- Top Navigation -->
+    <header class="fixed top-0 w-full z-40 bg-[#131313]/80 backdrop-blur-md border-b border-outline-variant/10 transition-all duration-300">
+        <!-- ... [Standard Header Content matching index.html] ... -->
+        <div class="flex justify-between items-center px-8 h-20 w-full max-w-none">
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="text-2xl font-['Space_Grotesk'] font-bold tracking-widest text-[#ffb59d]">IGNITE</a>
+                <nav class="hidden md:flex gap-8 items-center">
+                    <a class="text-[#e5e2e1] opacity-70 hover:text-[#ffb59d] transition-all duration-200 ease-out font-['Space_Grotesk'] font-bold tracking-[0.05em] uppercase text-sm" href="listings.html">Explore</a>
+                    <a class="text-[#e5e2e1] opacity-70 hover:text-[#ffb59d] transition-all duration-200 ease-out font-['Space_Grotesk'] font-bold tracking-[0.05em] uppercase text-sm" href="listings.html">Browse PG's</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="owner-auth.html" class="bg-primary-container hover:bg-primary-fixed-dim text-on-primary-fixed font-bold py-2.5 px-6 rounded-full text-sm font-headline tracking-wider uppercase inline-block text-center transition-colors">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-28 pb-32 px-8 md:px-20 min-h-screen bg-surface max-w-7xl mx-auto">
+        
+        <!-- Breadcrumbs & Header -->
+        <div class="mb-6">
+            <nav class="flex text-on-surface-variant text-xs font-label uppercase tracking-widest mb-4 items-center">
+                <button onclick="history.back()" class="hover:text-primary transition-colors flex items-center gap-1 border border-outline-variant/20 px-3 py-1 rounded-full mr-4 bg-surface-container-low hover:bg-surface-container-high text-on-surface">
+                    <span class="material-symbols-outlined text-[14px]">arrow_back</span> Back
+                </button>
+                <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+                <span class="mx-2">/</span>
+                <span class="text-on-surface truncate" id="bc-name">Loading...</span>
+            </nav>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-headline font-bold uppercase tracking-tight mb-2" id="detail-name">Loading Property...</h1>
+                    <div class="flex items-center gap-4 text-sm text-on-surface-variant">
+                        <span class="flex items-center gap-1 text-secondary"><span class="material-symbols-outlined filled text-sm">star</span> 5.0 <span class="text-xs text-on-surface-variant">(New Listing)</span></span>
+                        <span>•</span>
+                        <span class="flex items-center gap-1 capitalize truncate"><span class="material-symbols-outlined text-sm">location_on</span> <span id="detail-loc">Fetching location...</span></span>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <button class="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-on-surface hover:text-primary transition-colors"><span class="material-symbols-outlined">share</span> Share</button>
+                    <button class="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-on-surface hover:text-primary transition-colors"><span class="material-symbols-outlined">favorite_border</span> Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo Gallery Hero (Single View) -->
+        <div class="w-full h-[400px] md:h-[60vh] rounded-2xl overflow-hidden mb-12 relative group cursor-pointer" onclick="openLightbox(0)">
+            <!-- Main Hero Image -->
+            <img id="img-0" src="https://images.unsplash.com/photo-1542051842854-fae911438914?q=80&w=2070&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-placeholder.svg';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+            <div class="absolute inset-0 bg-background/20 group-hover:bg-background/40 transition-colors duration-300 flex items-center justify-center">
+                <span class="text-on-surface font-headline font-bold uppercase tracking-widest text-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2" id="extra-photos-count"><span class="material-symbols-outlined">collections</span> View Gallery</span>
+            </div>
+        </div>
+
+        <!-- Content Layout (Split Left/Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16 relative">
+            
+            <!-- Left Column: Details -->
+            <div class="col-span-1 lg:col-span-2 space-y-16">
+                <!-- Description -->
+                <section>
+                    <div class="flex justify-between items-center mb-6 pb-6 border-b border-outline-variant/20">
+                        <div>
+                            <h2 class="text-2xl font-headline font-bold uppercase tracking-wide capitalize" id="detail-type-title">Space Description</h2>
+                            <p class="text-on-surface-variant text-sm mt-1" id="detail-host">Hosted by Ignite Partner</p>
+                        </div>
+                        <div class="flex flex-col items-end gap-2">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1287&auto=format&fit=crop" onerror="this.onerror=null;this.src='./ignite-logo.svg';" class="w-14 h-14 rounded-full object-cover grayscale border-2 border-primary-container"/>
+                            <span class="inline-flex items-center gap-1.5 bg-surface-container-high px-3 py-1 rounded-full text-[0.65rem] font-bold tracking-widest uppercase text-primary border border-primary/20" title="Total Views"><span class="material-symbols-outlined text-[14px]">visibility</span> <span id="detail-views">0</span></span>
+                        </div>
+                    </div>
+                    <div class="text-on-surface-variant leading-relaxed space-y-4" id="detail-desc">
+                        <p>Loading details...</p>
+                    </div>
+                </section>
+
+                <!-- Amenities -->
+                <section>
+                    <h3 class="text-2xl font-headline font-bold uppercase tracking-wide mb-8 rounded">World-Class Amenities</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6" id="detail-amenities">
+                        <!-- Filled by JS -->
+                        <div class="flex items-center gap-4 text-on-surface-variant">
+                            <span class="material-symbols-outlined text-primary text-3xl">hourglass_empty</span>
+                            <span class="text-sm font-bold uppercase tracking-wider">Loading...</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- House Rules -->
+                <section>
+                    <h3 class="text-2xl font-headline font-bold uppercase tracking-wide mb-6">House Rules</h3>
+                    <div class="bg-surface-container-low border border-outline-variant/10 rounded-2xl p-8">
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-secondary mt-1">schedule</span>
+                                <div>
+                                    <strong class="block text-on-surface font-headline uppercase tracking-wider">Quiet Hours</strong>
+                                    <span class="text-on-surface-variant text-sm">Strictly 11:00 PM to 7:00 AM. Silence in the capsule corridors is absolute.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-secondary mt-1">no_drinks</span>
+                                <div>
+                                    <strong class="block text-on-surface font-headline uppercase tracking-wider">No Alcohol Intoxication</strong>
+                                    <span class="text-on-surface-variant text-sm">Maintain professional decorum in common areas.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="material-symbols-outlined text-secondary mt-1">pets</span>
+                                <div>
+                                    <strong class="block text-on-surface font-headline uppercase tracking-wider">No Pets Allowed</strong>
+                                    <span class="text-on-surface-variant text-sm">Due to shared ventilation and space constraints, pets are strictly prohibited.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Sticky Pricing & Contact Box -->
+            <div class="col-span-1 lg:col-span-1">
+                <div class="sticky top-32 bg-[#1A1A1A] border-2 border-outline-variant/10 rounded-3xl p-8 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                    <div class="mb-6 flex justify-between items-end">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-4xl font-headline font-bold text-primary" id="detail-price">₹--</span>
+                            <span class="text-on-surface-variant text-sm uppercase tracking-widest font-label">/ Month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 border-t border-b border-outline-variant/20 py-6 mb-6">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-on-surface-variant">Security Deposit</span>
+                            <span class="font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">info</span> Ask Host</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-on-surface-variant">Available Beds</span>
+                            <span class="font-bold text-tertiary" id="detail-beds">--</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-on-surface-variant">Minimum Lock-in</span>
+                            <span class="font-bold">1 Month</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <a id="btn-call" href="#" class="w-full kinetic-gradient bg-primary-container text-on-primary-fixed py-4 rounded-full font-headline font-bold text-sm tracking-widest uppercase hover:scale-[1.02] active:scale-95 transition-transform flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">call</span> Contact Host
+                        </a>
+                        <a id="btn-whatsapp" href="#" target="_blank" class="w-full bg-[#25D366] text-black py-4 rounded-full font-headline font-bold text-sm tracking-widest uppercase hover:scale-[1.02] active:scale-95 transition-transform flex items-center justify-center gap-2 shadow-[0_10px_20px_rgba(37,211,102,0.15)]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16"> <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/> </svg>
+                            WhatsApp
+                        </a>
+                    </div>
+                    <p class="text-center text-on-surface-variant text-xs mt-6 mb-6">You won't be charged yet. Connect directly with the owner to verify availability.</p>
+                    
+                    <!-- Direct Message Form -->
+                    <div class="mt-6 pt-6 border-t border-outline-variant/20">
+                        <h4 class="font-headline font-bold text-sm uppercase tracking-widest text-primary mb-4">Send a Message</h4>
+                        <form id="inquiry-form" class="space-y-4">
+                            <input type="text" id="inquiry-name" required placeholder="Your Name" class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors">
+                            <input type="tel" id="inquiry-phone" required placeholder="Your Phone / WhatsApp" class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors">
+                            <textarea id="inquiry-msg" required rows="3" placeholder="Hi, I'm interested in this property..." class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors"></textarea>
+                            <button type="submit" class="w-full border-2 border-primary text-primary py-3 rounded-full font-headline font-bold text-sm tracking-widest uppercase hover:bg-primary/10 transition-colors">Send Inquiry</button>
+                        </form>
+                        <p id="inquiry-status" class="hidden text-center text-success text-xs font-bold uppercase tracking-widest mt-4">Message Sent!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Shell (Standard) -->
+    <!-- [Footer identical to index.html] -->
+    <footer class="bg-[#131313] w-full border-t border-[#594139]/15 mt-10">
+        <div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full">
+            <div class="mb-10 md:mb-0">
+                <span class="text-xl font-bold text-[#ffb59d] font-headline tracking-widest">IGNITE</span>
+                <p class="text-[#e5e2e1]/40 text-[0.6rem] mt-2 font-label tracking-widest uppercase">To the Future.</p>
+            </div>
+            <div class="text-[#e5e2e1]/40 font-['Manrope'] text-[0.6875rem] tracking-[0.1em] uppercase text-center md:text-right">
+                © 2026 IGNITE HOSTEL MARKETPLACE. <br class="hidden md:block"/> ALL RIGHTS RESERVED.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fullscreen Lightbox Modal (Hidden by Default) -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-background/95 noir-blur hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300">
+        <button onclick="closeLightbox()" class="absolute top-8 right-8 text-on-surface hover:text-primary transition-colors bg-surface-container p-3 rounded-full border border-outline-variant/30 flex items-center justify-center">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="w-full max-w-5xl px-8 relative">
+            <img id="lightbox-img" src="" class="w-full h-auto max-h-[80vh] object-contain rounded-xl shadow-2xl"/>
+            
+            <button onclick="prevImage(event)" class="absolute left-10 md:-left-10 top-1/2 -translate-y-1/2 bg-surface p-4 rounded-full border border-outline-variant/30 hover:bg-surface-high transition-colors text-on-surface hover:text-primary">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <button onclick="nextImage(event)" class="absolute right-10 md:-right-10 top-1/2 -translate-y-1/2 bg-surface p-4 rounded-full border border-outline-variant/30 hover:bg-surface-high transition-colors text-on-surface hover:text-primary">
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+        </div>
+        <div class="mt-6 flex gap-4 overflow-x-auto max-w-2xl px-4 py-2" id="lightbox-thumbnails">
+            <!-- Thumbnails inserted by JS -->
+        </div>
+    </div>
+
+    <script>
+        let images = [
+            "https://images.unsplash.com/photo-1542051842854-fae911438914?q=80&w=2070&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=2069&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1629140727571-9b5c6f6267b4?q=80&w=1927&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1555854877-c3761358b5b5?q=80&w=2069&auto=format&fit=crop"
+        ];
+        
+        let currentImageIndex = 0;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightboxImage();
+            
+            lightbox.classList.remove('hidden');
+            // Small timeout for browser to render display: flex before triggering opacity transition
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add('opacity-0');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function updateLightboxImage() {
+            lightboxImg.src = images[currentImageIndex] || './ignite-placeholder.svg';
+        }
+
+        function nextImage(e) {
+            e.stopPropagation();
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateLightboxImage();
+        }
+
+        function prevImage(e) {
+            e.stopPropagation();
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            updateLightboxImage();
+        }
+
+        // Close when clicking outside image
+        lightbox.addEventListener('click', (e) => {
+            if(e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // --- Helper for Text/JSON Arrays ---
+        function parseArray(val) {
+            if (!val) return [];
+            if (Array.isArray(val)) return val;
+            try {
+                const parsed = JSON.parse(val);
+                if (Array.isArray(parsed)) return parsed;
+            } catch(e) {}
+            if (typeof val === 'string' && val.trim().length > 0) return [val];
+            return [];
+        }
+
+        // Data Fetching Logic
+        document.addEventListener('DOMContentLoaded', async () => {
+            lightboxImg.onerror = () => {
+                lightboxImg.onerror = null;
+                lightboxImg.src = './ignite-placeholder.svg';
+            };
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if(!id || !window.supabaseClient) return;
+
+            const { data: h, error } = await window.supabaseClient
+                .from('hostels')
+                .select('*')
+                .eq('id', id)
+                .single();
+                
+            if(error || !h) {
+                document.getElementById('detail-name').textContent = "Hostel Not Found";
+                return;
+            }
+
+            // --- Increment Views ---
+            const newViews = (h.views || 0) + 1;
+            window.supabaseClient.from('hostels').update({ views: newViews }).eq('id', id).then();
+            // -----------------------
+
+            // Populate Text
+            document.title = "Ignite - " + h.name;
+            document.getElementById('bc-name').textContent = h.name;
+            document.getElementById('detail-name').textContent = h.name;
+            document.getElementById('detail-loc').textContent = (h.address ? h.address + ', ' : '') + h.city;
+            document.getElementById('detail-type-title').textContent = (h.type ? h.type + ' ' : '') + "Space";
+            document.getElementById('detail-desc').innerHTML = `<p>${(h.description || '').replace(/\n/g, '<br/>')}</p>`;
+            document.getElementById('detail-price').textContent = "₹" + h.price_per_month;
+            document.getElementById('detail-beds').textContent = h.beds_available || '--';
+            
+            // Buttons
+            if(h.contact_phone) document.getElementById('btn-call').href = "tel:" + h.contact_phone;
+            if(h.contact_whatsapp) document.getElementById('btn-whatsapp').href = "https://wa.me/" + h.contact_whatsapp.replace(/\D/g,'');
+
+            // Amenities
+            const ams = parseArray(h.amenities);
+            if(ams && ams.length > 0) {
+                // simple mapping of text to icon name
+                const iconMap = {
+                    'wifi': 'wifi_tethering', 'ac': 'ac_unit', 'meals': 'local_cafe',
+                    'laundry': 'local_laundry_service', 'cctv': 'videocam', 'biometric': 'fingerprint',
+                    'gym': 'fitness_center', 'parking': 'local_parking'
+                };
+                
+                document.getElementById('detail-amenities').innerHTML = ams.map(a => {
+                    const icon = iconMap[a.toLowerCase()] || 'check_circle';
+                    return `
+                    <div class="flex items-center gap-4">
+                        <span class="material-symbols-outlined text-primary text-3xl">${icon}</span>
+                        <span class="text-sm font-bold uppercase tracking-wider">${a}</span>
+                    </div>`;
+                }).join('');
+            }
+
+            // Images
+            const parsedImages = parseArray(h.images).filter((u) => typeof u === 'string' && u.trim().length > 0);
+            if(parsedImages && parsedImages.length > 0) {
+                images = parsedImages;
+                document.getElementById('img-0').src = images[0];
+                if(images.length > 1) {
+                    document.getElementById('extra-photos-count').innerHTML = `<span class="material-symbols-outlined">collections</span> View Gallery (${images.length})`;
+                } else {
+                    document.getElementById('extra-photos-count').innerHTML = `<span class="material-symbols-outlined">fullscreen</span> View Fullscreen`;
+                }
+            } else {
+                images = ['./ignite-placeholder.svg'];
+                document.getElementById('img-0').src = './ignite-placeholder.svg';
+                document.getElementById('extra-photos-count').innerHTML = `<span class="material-symbols-outlined">fullscreen</span> View Fullscreen`;
+            }
+
+            // Populate Views Update
+            document.getElementById('detail-views').textContent = newViews;
+
+            // Handle Inquiry Submission
+            document.getElementById('inquiry-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = e.target.querySelector('button[type="submit"]');
+                const origText = btn.textContent;
+                btn.textContent = "Sending...";
+                btn.disabled = true;
+
+                try {
+                    const sender_name = document.getElementById('inquiry-name').value;
+                    const sender_phone = document.getElementById('inquiry-phone').value;
+                    const message = document.getElementById('inquiry-msg').value;
+
+                    const { error: inquiryErr } = await window.supabaseClient.from('inquiries').insert([{
+                        hostel_id: h.id,
+                        owner_id: h.owner_id,
+                        sender_name,
+                        sender_phone,
+                        message
+                    }]);
+
+                    if (inquiryErr) throw inquiryErr;
+
+                    e.target.reset();
+                    e.target.classList.add('hidden');
+                    document.getElementById('inquiry-status').classList.remove('hidden');
+
+                } catch (err) {
+                    alert("Failed to send message: " + err.message);
+                    btn.textContent = origText;
+                    btn.disabled = false;
+                }
+            });
+
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if(!lightbox.classList.contains('hidden')) {
+                if(e.key === 'Escape') closeLightbox();
+                if(e.key === 'ArrowRight') nextImage(new Event('trigger'));
+                if(e.key === 'ArrowLeft') prevImage(new Event('trigger'));
+            }
+        });
+    </script>
+</body>
+</html>
