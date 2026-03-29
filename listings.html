@@ -110,8 +110,8 @@
             </div>
             <div class="flex items-center gap-6">
                 <div class="relative hidden sm:block">
-                    <input class="bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary-container text-sm px-6 py-2 rounded-full w-64 transition-all" placeholder="Search destinations..." type="text"/>
-                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+                    <input id="nav-search-listings" class="bg-surface-container-lowest border-none focus:ring-2 focus:ring-primary-container text-sm px-6 py-2 rounded-full w-64 transition-all" placeholder="Search destinations..." type="text" autocomplete="off"/>
+                    <button id="nav-search-listings-btn" class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg hover:text-primary transition-colors">search</button>
                 </div>
                 <a href="owner-auth.html" class="scale-95 active:scale-90 transition-transform bg-primary-container text-on-primary-fixed font-bold py-2.5 px-6 rounded-full text-sm font-headline tracking-wider uppercase inline-block text-center">
                     Sign In
@@ -138,17 +138,37 @@
     <main class="pt-32 pb-32 px-8 md:px-20 min-h-screen bg-surface">
         
         <!-- Header -->
-        <div class="mb-10 flex flex-col md:flex-row justify-between items-end gap-4 border-b border-outline-variant/10 pb-6">
-            <div>
-                <p class="text-primary font-label tracking-widest uppercase text-xs mb-2">Explore</p>
-            <h1 class="text-4xl md:text-5xl font-headline font-bold uppercase tracking-tight">Available Sanctuaries</h1>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="relative md:hidden w-full">
-                    <input class="bg-surface-container-lowest w-full border-none focus:ring-2 focus:ring-primary-container text-sm px-6 py-3 rounded-full transition-all" placeholder="Search..." type="text"/>
-                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+        <div class="mb-10 border-b border-outline-variant/10 pb-6">
+            <!-- Page Title -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-6">
+                <div>
+                    <p class="text-primary font-label tracking-widest uppercase text-xs mb-2">Explore</p>
+                    <h1 class="text-4xl md:text-5xl font-headline font-bold uppercase tracking-tight">Available Sanctuaries</h1>
                 </div>
-                <p class="text-on-surface-variant text-sm font-label uppercase tracking-widest whitespace-nowrap hidden md:block">Showing 24 Results</p>
+                <p class="text-on-surface-variant text-sm font-label uppercase tracking-widest whitespace-nowrap" id="result-count">Loading...</p>
+            </div>
+            <!-- Search Bar -->
+            <div class="relative max-w-2xl">
+                <span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-primary text-xl pointer-events-none">location_on</span>
+                <input
+                    id="search-input"
+                    type="text"
+                    placeholder="Search by city, area or hostel name…"
+                    class="w-full bg-surface-container-low border border-outline-variant/30 focus:border-primary-container/60 focus:ring-2 focus:ring-primary-container/20 focus:outline-none text-sm pl-14 pr-14 py-4 rounded-2xl transition-all font-body text-on-surface placeholder:text-on-surface-variant/50"
+                    autocomplete="off"
+                />
+                <button id="search-clear" class="absolute right-5 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors hidden">
+                    <span class="material-symbols-outlined text-xl">close</span>
+                </button>
+            </div>
+            <!-- Quick Tags -->
+            <div class="flex flex-wrap gap-2 mt-4" id="quick-tags">
+                <button class="quick-tag px-4 py-1.5 rounded-full text-xs font-label uppercase tracking-widest border border-outline-variant/30 text-on-surface-variant hover:border-primary-container hover:text-primary transition-all" data-tag="hyderabad">Hyderabad</button>
+                <button class="quick-tag px-4 py-1.5 rounded-full text-xs font-label uppercase tracking-widest border border-outline-variant/30 text-on-surface-variant hover:border-primary-container hover:text-primary transition-all" data-tag="bangalore">Bangalore</button>
+                <button class="quick-tag px-4 py-1.5 rounded-full text-xs font-label uppercase tracking-widest border border-outline-variant/30 text-on-surface-variant hover:border-primary-container hover:text-primary transition-all" data-tag="mumbai">Mumbai</button>
+                <button class="quick-tag px-4 py-1.5 rounded-full text-xs font-label uppercase tracking-widest border border-outline-variant/30 text-on-surface-variant hover:border-primary-container hover:text-primary transition-all" data-tag="delhi">Delhi</button>
+                <button class="quick-tag px-4 py-1.5 rounded-full text-xs font-label uppercase tracking-widest border border-outline-variant/30 text-on-surface-variant hover:border-primary-container hover:text-primary transition-all" data-tag="pune">Pune</button>
+                <button class="quick-tag px-4 py-1.5 rounded-full text-xs font-label uppercase tracking-widest border border-outline-variant/30 text-on-surface-variant hover:border-primary-container hover:text-primary transition-all" data-tag="chennai">Chennai</button>
             </div>
         </div>
 
@@ -208,43 +228,79 @@
                 });
             }
 
+            // --- Navbar search on listings page: sync with main search input ---
+            const navSearchListings    = document.getElementById('nav-search-listings');
+            const navSearchListingsBtn = document.getElementById('nav-search-listings-btn');
+            function syncNavSearch(val) {
+                const mainInput = document.getElementById('search-input');
+                const clearBtn  = document.getElementById('search-clear');
+                if (mainInput) {
+                    mainInput.value = val;
+                    mainInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+                if (clearBtn) clearBtn.classList.toggle('hidden', !val.trim());
+            }
+            if (navSearchListings) {
+                navSearchListings.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') { e.preventDefault(); syncNavSearch(this.value); }
+                });
+            }
+            if (navSearchListingsBtn) {
+                navSearchListingsBtn.addEventListener('click', function() {
+                    syncNavSearch(navSearchListings ? navSearchListings.value : '');
+                });
+            }
+
             const grid = document.getElementById('listings-grid');
-            if(!grid || !window.supabaseClient) return;
-            
+            const searchInput = document.getElementById('search-input');
+            const searchClear = document.getElementById('search-clear');
+            const resultCount = document.getElementById('result-count');
+            if (!grid || !window.supabaseClient) return;
+
+            // --- Read URL search param ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlQuery = urlParams.get('q') || '';
+            if (urlQuery && searchInput) {
+                searchInput.value = urlQuery;
+                searchClear.classList.remove('hidden');
+            }
+
+            // --- Skeleton loaders while fetching ---
             grid.innerHTML = `
                 <div class="group"><div class="skeleton aspect-[4/5] rounded-[0.75rem] mb-6"></div><div class="px-2"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div></div>
                 <div class="group"><div class="skeleton aspect-[4/5] rounded-[0.75rem] mb-6"></div><div class="px-2"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div></div>
                 <div class="group hidden sm:block"><div class="skeleton aspect-[4/5] rounded-[0.75rem] mb-6"></div><div class="px-2"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div></div>
                 <div class="group hidden xl:block"><div class="skeleton aspect-[4/5] rounded-[0.75rem] mb-6"></div><div class="px-2"><div class="skeleton skeleton-heading"></div><div class="skeleton skeleton-text medium"></div></div></div>
             `;
-            
-            const { data: hostels, error } = await window.supabaseClient
+
+            // --- Fetch ALL hostels once ---
+            const { data: allHostels, error } = await window.supabaseClient
                 .from('hostels')
                 .select('*')
                 .order('created_at', { ascending: false });
                 
             if (error) {
-                grid.innerHTML = `<div class="col-span-full py-20 text-center text-error font-bold">Error loading listings: ${error.message}</div>`;
+                grid.innerHTML = `<div class="col-span-full py-20 text-center text-red-400 font-bold">Error loading listings: ${error.message}</div>`;
+                if (resultCount) resultCount.textContent = 'Error';
                 return;
             }
-            
-            if(!hostels || hostels.length === 0) {
-                grid.innerHTML = '<div class="col-span-full py-20 text-center text-on-surface-variant font-bold tracking-widest uppercase text-sm">No sanctuaries available at the moment. Check back soon!</div>';
-                return;
-            }
-            
-            grid.innerHTML = hostels.map((h, i) => {
-                const fallbackImages = [
-                    'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1502672260266-1c1c2940e4f4?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=800&auto=format&fit=crop'
-                ];
-                // Parse images — Supabase may return a JSON string or native array
+
+            const hostels = allHostels || [];
+
+            // --- Fallback images pool ---
+            const fallbackImages = [
+                'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1502672260266-1c1c2940e4f4?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=800&auto=format&fit=crop'
+            ];
+
+            // --- Build a hostel card HTML string ---
+            function buildCard(h, i) {
                 let imagesArr = [];
                 try {
                     imagesArr = typeof h.images === 'string' ? JSON.parse(h.images) : (h.images || []);
@@ -252,15 +308,14 @@
                 } catch(e) { imagesArr = []; }
                 const rawImage = imagesArr.length > 0 ? imagesArr[0] : '';
                 const img = (typeof rawImage === 'string' && rawImage.startsWith('http'))
-                    ? rawImage
-                    : fallbackImages[i % fallbackImages.length];
-                // Parse amenities same way
+                    ? rawImage : fallbackImages[i % fallbackImages.length];
+
                 let parsedAmenities = [];
                 try {
                     parsedAmenities = typeof h.amenities === 'string' ? JSON.parse(h.amenities) : (h.amenities || []);
                     if (!Array.isArray(parsedAmenities)) parsedAmenities = [];
                 } catch(e) { parsedAmenities = []; }
-                
+
                 return `
                 <a href="hostel-detail.html?id=${h.id}" class="group cursor-pointer block cursor-glow premium-hover rounded-[0.75rem]" data-reveal data-reveal-delay="${(i % 4) + 1}">
                     <div class="relative overflow-hidden rounded-[0.75rem] aspect-[4/5] mb-6 bg-[#1A1A1A]">
@@ -283,14 +338,97 @@
                         </div>
                     </div>
                 </a>`;
-            }).join('');
+            }
 
-            // Wire up scroll-reveal & cursor-glow on dynamically injected cards
-            // Use rAF so the browser paints the DOM before the observer fires
-            requestAnimationFrame(function() {
-                if (window.premiumObserve) window.premiumObserve(grid);
+            // --- Render filtered results ---
+            function renderHostels(filtered) {
+                if (resultCount) {
+                    resultCount.textContent = filtered.length === hostels.length
+                        ? `${filtered.length} Sanctuaries`
+                        : `${filtered.length} of ${hostels.length} Results`;
+                }
+                if (filtered.length === 0) {
+                    grid.innerHTML = `
+                        <div class="col-span-full py-24 text-center">
+                            <span class="material-symbols-outlined text-5xl text-on-surface-variant/30 mb-4 block">search_off</span>
+                            <p class="text-on-surface-variant font-bold tracking-widest uppercase text-sm">No sanctuaries found for this area.</p>
+                            <p class="text-on-surface-variant/50 text-xs mt-2">Try a different city or area name.</p>
+                        </div>`;
+                    return;
+                }
+                grid.innerHTML = filtered.map((h, i) => buildCard(h, i)).join('');
+                requestAnimationFrame(function() {
+                    if (window.premiumObserve) window.premiumObserve(grid);
+                });
+            }
+
+            // --- Filter logic ---
+            function filterHostels(query) {
+                const q = query.trim().toLowerCase();
+                if (!q) return hostels;
+                return hostels.filter(h => {
+                    const name    = (h.name    || '').toLowerCase();
+                    const city    = (h.city    || '').toLowerCase();
+                    const address = (h.address || '').toLowerCase();
+                    const area    = (h.area    || '').toLowerCase();
+                    return name.includes(q) || city.includes(q) || address.includes(q) || area.includes(q);
+                });
+            }
+
+            // --- Initial render (with URL query if present) ---
+            renderHostels(filterHostels(urlQuery));
+
+            // --- Wire search input ---
+            if (searchInput) {
+                let debounceTimer;
+                searchInput.addEventListener('input', function() {
+                    const val = this.value;
+                    searchClear.classList.toggle('hidden', !val.trim());
+                    // Update quick-tag active state
+                    document.querySelectorAll('.quick-tag').forEach(t => {
+                        t.classList.toggle('border-primary-container', t.dataset.tag === val.trim().toLowerCase());
+                        t.classList.toggle('text-primary', t.dataset.tag === val.trim().toLowerCase());
+                    });
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(() => renderHostels(filterHostels(val)), 220);
+                });
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') { e.preventDefault(); renderHostels(filterHostels(this.value)); }
+                });
+            }
+
+            // --- Clear button ---
+            if (searchClear) {
+                searchClear.addEventListener('click', function() {
+                    searchInput.value = '';
+                    this.classList.add('hidden');
+                    document.querySelectorAll('.quick-tag').forEach(t => {
+                        t.classList.remove('border-primary-container', 'text-primary');
+                    });
+                    renderHostels(hostels);
+                });
+            }
+
+            // --- Quick tag buttons ---
+            document.querySelectorAll('.quick-tag').forEach(function(btn) {
+                // Highlight if matches current query
+                if (urlQuery && btn.dataset.tag === urlQuery.trim().toLowerCase()) {
+                    btn.classList.add('border-primary-container', 'text-primary');
+                }
+                btn.addEventListener('click', function() {
+                    const tag = this.dataset.tag;
+                    searchInput.value = tag;
+                    searchClear.classList.remove('hidden');
+                    document.querySelectorAll('.quick-tag').forEach(t => {
+                        t.classList.toggle('border-primary-container', t === btn);
+                        t.classList.toggle('text-primary', t === btn);
+                    });
+                    renderHostels(filterHostels(tag));
+                });
             });
+
         });
+
     </script>
     <script src="./js/premium.js"></script>
 </body>
