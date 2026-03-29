@@ -366,12 +366,22 @@
             function filterHostels(query) {
                 const q = query.trim().toLowerCase();
                 if (!q) return hostels;
+                
+                // Split search into individual words for smarter matching (e.g. "mangalpally hyderabad")
+                const searchTerms = q.split(/\s+/);
+                
                 return hostels.filter(h => {
-                    const name    = (h.name    || '').toLowerCase();
-                    const city    = (h.city    || '').toLowerCase();
-                    const address = (h.address || '').toLowerCase();
-                    const area    = (h.area    || '').toLowerCase();
-                    return name.includes(q) || city.includes(q) || address.includes(q) || area.includes(q);
+                    // Combine all searchable fields into one giant string
+                    const fullText = [
+                        h.name || '',
+                        h.city || '',
+                        h.address || '',
+                        h.area || '',
+                        h.type || ''
+                    ].join(' ').toLowerCase();
+                    
+                    // The hostel matches if EVERY entered word is found somewhere in its details
+                    return searchTerms.every(term => fullText.includes(term));
                 });
             }
 
