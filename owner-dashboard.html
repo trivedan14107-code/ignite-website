@@ -431,11 +431,75 @@
                 </div>
             </div>
 
-            <div id="tab-plan" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
-                <div class="bg-surface-container-lowest border border-outline-variant/10 rounded-3xl p-12 text-center text-on-surface-variant h-[50vh] flex flex-col items-center justify-center">
-                    <span class="material-symbols-outlined text-6xl mb-4 text-outline-variant">stars</span>
-                    <h2 class="text-xl font-headline font-bold uppercase mb-2 text-on-surface">Your Subscription</h2>
-                    <p class="text-sm max-w-md">Manage your billing, upgrade to Enterprise, and view past invoices.</p>
+            <div id="tab-plan" class="tab-content hidden animate-[fadeIn_0.3s_ease-out] w-full max-w-5xl mx-auto pt-4 pb-12">
+                <!-- Starter State: Shows Pro & Enterprise -->
+                <div id="plan-state-starter" class="hidden">
+                    <div class="mb-10 text-center">
+                        <h2 class="text-3xl font-headline font-bold uppercase mb-2 text-on-surface">Upgrade Your Partner Plan</h2>
+                        <p class="text-on-surface-variant max-w-xl mx-auto text-sm">You are currently on the <span class="text-primary font-bold">Starter</span> plan. Upgrade to unlock powerful tools and scale your bookings.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-[#1A1A1A] p-8 rounded-3xl border-2 border-primary-container flex flex-col shadow-[0_20px_40px_rgba(255,107,53,0.15)] glow-border">
+                            <h3 class="text-2xl font-headline font-bold uppercase mb-2 text-on-surface">Pro Partner</h3>
+                            <p class="text-on-surface-variant text-sm mb-6 pb-6 border-b border-outline-variant/20">For growing hostel empires.</p>
+                            <div class="mb-8 items-end flex">
+                                <span class="text-5xl font-bold font-headline text-primary">₹399</span><span class="text-on-surface-variant mb-1">/mo</span>
+                            </div>
+                            <ul class="flex-grow space-y-4 mb-8">
+                                <li class="flex items-center gap-3 text-sm text-on-surface"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> 3 Active Listings</li>
+                                <li class="flex items-center gap-3 text-sm text-on-surface"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> 5 Photos Per Listing</li>
+                                <li class="flex items-center gap-3 text-sm text-on-surface"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Analytics Dashboard</li>
+                                <li class="flex items-center gap-3 text-sm text-on-surface"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> WhatsApp Button</li>
+                            </ul>
+                            <button onclick="upgradePlan('pro')" class="w-full bg-primary-container text-on-primary-fixed py-3 rounded-full font-bold uppercase tracking-wider hover:scale-105 active:scale-95 transition-transform text-sm shadow-[0_10px_20px_rgba(255,107,53,0.2)]">Upgrade to Pro</button>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl flex flex-col border border-outline-variant/30 text-on-surface">
+                            <h3 class="text-2xl font-headline font-bold uppercase mb-2">Enterprise</h3>
+                            <p class="text-on-surface-variant text-sm mb-6 pb-6 border-b border-outline-variant/20">For chains & operations.</p>
+                            <div class="mb-8 items-end flex">
+                                <span class="text-5xl font-bold font-headline">₹599</span><span class="text-on-surface-variant mb-1">/mo</span>
+                            </div>
+                            <ul class="flex-grow space-y-4 mb-8">
+                                <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Unlimited Listings</li>
+                                <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> 15 Photos Per Listing</li>
+                                <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> 🏠 Featured on Homepage</li>
+                            </ul>
+                            <button onclick="upgradePlan('enterprise')" class="w-full border border-outline-variant/30 text-on-surface py-3 rounded-full font-bold uppercase tracking-wider hover:bg-surface-container-highest transition-colors text-sm">Upgrade to Enterprise</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro State: Shows Enterprise -->
+                <div id="plan-state-pro" class="hidden">
+                    <div class="mb-10 text-center">
+                        <h2 class="text-3xl font-headline font-bold uppercase mb-2 text-on-surface">You are a Pro Partner</h2>
+                        <p class="text-on-surface-variant max-w-xl mx-auto text-sm">You are currently on the <span class="text-primary font-bold">Pro</span> plan. Maximize your reach by upgrading to Enterprise.</p>
+                    </div>
+                    <div class="max-w-md mx-auto">
+                        <div class="glass-card p-8 rounded-3xl flex flex-col border border-outline-variant/30 text-on-surface ring-2 ring-primary/20 relative overflow-hidden">
+                            <h3 class="text-2xl font-headline font-bold uppercase mb-2">Enterprise</h3>
+                            <p class="text-on-surface-variant text-sm mb-6 pb-6 border-b border-outline-variant/20">For chains & operations.</p>
+                            <div class="mb-8 items-end flex">
+                                <span class="text-5xl font-bold font-headline">₹599</span><span class="text-on-surface-variant mb-1">/mo</span>
+                            </div>
+                            <ul class="flex-grow space-y-4 mb-8">
+                                <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> Unlimited Listings</li>
+                                <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> 15 Photos Per Listing</li>
+                                <li class="flex items-center gap-3 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> 🏠 Featured on Homepage</li>
+                            </ul>
+                            <button onclick="upgradePlan('enterprise')" class="w-full bg-primary-container text-on-primary-fixed py-3 rounded-full font-bold uppercase tracking-wider hover:scale-105 active:scale-95 transition-transform text-sm shadow-[0_10px_20px_rgba(255,107,53,0.2)]">Upgrade to Enterprise</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enterprise State -->
+                <div id="plan-state-enterprise" class="hidden">
+                    <div class="bg-surface-container-lowest border border-primary/20 rounded-3xl p-12 text-center h-[50vh] flex flex-col items-center justify-center relative overflow-hidden ring-2 ring-primary/10 glow-border">
+                        <span class="material-symbols-outlined text-6xl mb-4 text-primary">diamond</span>
+                        <h2 class="text-2xl font-headline font-bold uppercase mb-2 text-on-surface">You are on the Enterprise plan!</h2>
+                        <p class="text-sm max-w-lg text-on-surface-variant mb-6 mx-auto">Enjoy unlimited listings, homepage featuring, and dedicated support. For custom feature requests, please feel free to contact us.</p>
+                        <a href="contact.html" class="px-6 py-2 border border-outline-variant/30 rounded-full text-sm font-bold uppercase tracking-widest text-on-surface hover:text-primary transition-colors">Contact Support</a>
+                    </div>
                 </div>
             </div>
             
@@ -729,6 +793,47 @@
             if (featField && featLocked) {
                 featField.classList.toggle('hidden', !limits.featured);
                 featLocked.classList.toggle('hidden', limits.featured);
+            }
+            renderPlanTab(); // Update the plan tab UI if it changes
+        }
+
+        // --- Plan Tab Logic ---
+        function renderPlanTab() {
+            const elStarter = document.getElementById('plan-state-starter');
+            const elPro = document.getElementById('plan-state-pro');
+            const elEnt = document.getElementById('plan-state-enterprise');
+            if (!elStarter || !elPro || !elEnt) return;
+
+            elStarter.classList.add('hidden');
+            elPro.classList.add('hidden');
+            elEnt.classList.add('hidden');
+
+            if (currentUserPlan === 'starter') elStarter.classList.remove('hidden');
+            else if (currentUserPlan === 'pro') elPro.classList.remove('hidden');
+            else if (currentUserPlan === 'enterprise') elEnt.classList.remove('hidden');
+        }
+
+        async function upgradePlan(newPlan) {
+            if (!confirm(`Are you sure you want to upgrade to ${newPlan.toUpperCase()}?`)) return;
+            const btn = event.currentTarget || event.target;
+            const originalText = btn.textContent;
+            btn.textContent = "Upgrading...";
+            btn.disabled = true;
+
+            const { data, error } = await window.supabaseClient.auth.updateUser({
+                data: { plan: newPlan }
+            });
+
+            if (error) {
+                alert("Upgrade Failed: " + error.message);
+                btn.textContent = originalText;
+                btn.disabled = false;
+            } else {
+                alert(`Successfully upgraded to ${newPlan.toUpperCase()}!`);
+                currentUserPlan = newPlan;
+                const profileBadge = document.querySelector('.profile-role');
+                if (profileBadge) profileBadge.textContent = newPlan;
+                applyPlanGating(); // this also re-calls renderPlanTab()
             }
         }
 
