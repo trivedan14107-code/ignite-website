@@ -192,6 +192,33 @@
                         <div class="text-4xl font-headline font-bold mb-1" id="dash-total-views">--</div>
                         <span class="text-xs text-on-surface-variant">Across all active properties</span>
                     </div>
+
+                    <!-- Plan Badge Card -->
+                    <div class="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10 relative overflow-hidden">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-on-surface-variant text-xs font-bold uppercase tracking-widest">Current Plan</span>
+                            <span class="material-symbols-outlined text-secondary bg-secondary/10 p-2 rounded-lg">stars</span>
+                        </div>
+                        <div class="text-4xl font-headline font-bold mb-1 capitalize" id="dash-plan-display">Starter</div>
+                        <button onclick="switchTab('plan')" class="text-[0.6rem] text-primary font-bold uppercase tracking-widest hover:underline">Upgrade Plan →</button>
+                    </div>
+                </div>
+
+                <!-- Analytics Panel (Pro/Enterprise only) -->
+                <div id="analytics-panel" class="hidden mb-12">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <p class="text-primary font-label tracking-widest uppercase text-xs mb-1">Performance</p>
+                            <h2 class="text-2xl font-headline font-bold uppercase">Property Analytics</h2>
+                        </div>
+                        <span class="bg-primary-container/20 text-primary border border-primary/30 text-[0.6rem] px-3 py-1 rounded-full font-bold uppercase tracking-widest">Pro Feature</span>
+                    </div>
+                    <div class="bg-surface-container-low border border-outline-variant/10 rounded-2xl p-8">
+                        <p class="text-xs text-on-surface-variant uppercase tracking-widest font-bold mb-6">Views Per Listing (All Time)</p>
+                        <div id="analytics-bars" class="space-y-4">
+                            <p class="text-on-surface-variant text-sm">Loading analytics...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -348,6 +375,41 @@
                             </div>
                         </div>
 
+                        <!-- Section 6: Video Tour (Pro/Enterprise) -->
+                        <div>
+                            <h3 class="text-lg font-headline font-bold uppercase mb-2 text-primary border-l-4 border-primary pl-3">6. Video Tour <span class="text-[0.6rem] bg-primary-container/20 text-primary border border-primary/30 px-2 py-0.5 rounded-full ml-2 align-middle">PRO</span></h3>
+                            <p class="text-xs text-on-surface-variant mb-4 pl-3">Paste a YouTube or Vimeo link so tenants can take a virtual walkthrough.</p>
+                            <div id="pro-video-field">
+                                <input type="url" id="hostel-video-url" class="w-full bg-surface-container border border-outline-variant/30 rounded-lg px-4 py-3 focus:ring-primary focus:border-primary text-sm transition-colors" placeholder="https://youtube.com/watch?v=...">
+                            </div>
+                            <div id="pro-video-locked" class="hidden bg-surface-container-lowest border border-outline-variant/20 rounded-lg px-4 py-4 flex items-center gap-3">
+                                <span class="material-symbols-outlined text-outline-variant">lock</span>
+                                <span class="text-xs text-on-surface-variant">Upgrade to <strong class="text-primary">Pro</strong> to add video tours.</span>
+                                <button type="button" onclick="switchTab('plan')" class="ml-auto text-[0.6rem] bg-primary-container text-on-primary-fixed px-3 py-1 rounded-full font-bold uppercase tracking-widest">Upgrade</button>
+                            </div>
+                        </div>
+
+                        <!-- Section 7: Featured on Homepage (Enterprise) -->
+                        <div>
+                            <h3 class="text-lg font-headline font-bold uppercase mb-2 text-primary border-l-4 border-primary pl-3">7. Homepage Feature <span class="text-[0.6rem] bg-primary-container/20 text-primary border border-primary/30 px-2 py-0.5 rounded-full ml-2 align-middle">ENTERPRISE</span></h3>
+                            <p class="text-xs text-on-surface-variant mb-4 pl-3">Feature this hostel in the "Core Collection" on the homepage for maximum visibility.</p>
+                            <div id="enterprise-featured-field">
+                                <label class="flex items-center gap-4 cursor-pointer p-4 border border-outline-variant/20 rounded-lg bg-surface-container-lowest hover:border-primary/40 transition-colors">
+                                    <input type="checkbox" id="hostel-is-featured" class="custom-checkbox w-5 h-5 rounded border-outline-variant/40 bg-surface text-primary focus:ring-primary focus:ring-offset-0">
+                                    <div>
+                                        <span class="text-sm font-bold uppercase tracking-wider text-on-surface block">Feature on Homepage</span>
+                                        <span class="text-xs text-on-surface-variant">This hostel will appear in the Core Collection on the landing page.</span>
+                                    </div>
+                                    <span class="ml-auto material-symbols-outlined text-primary text-2xl">home_pin</span>
+                                </label>
+                            </div>
+                            <div id="enterprise-featured-locked" class="hidden bg-surface-container-lowest border border-outline-variant/20 rounded-lg px-4 py-4 flex items-center gap-3">
+                                <span class="material-symbols-outlined text-outline-variant">lock</span>
+                                <span class="text-xs text-on-surface-variant">Upgrade to <strong class="text-primary">Enterprise</strong> to feature your hostel on the homepage.</span>
+                                <button type="button" onclick="switchTab('plan')" class="ml-auto text-[0.6rem] bg-primary-container text-on-primary-fixed px-3 py-1 rounded-full font-bold uppercase tracking-widest">Upgrade</button>
+                            </div>
+                        </div>
+
                         <div class="pt-8 border-t border-outline-variant/10 flex justify-end gap-4">
                             <button type="button" class="px-6 py-3 font-bold uppercase tracking-widest text-sm text-on-surface hover:text-primary transition-colors">Save as Draft</button>
                             <button type="submit" class="kinetic-gradient px-8 py-3 rounded-full font-headline font-bold uppercase tracking-widest text-sm text-on-primary-fixed shadow-[0_10px_20px_rgba(255,107,53,0.2)] hover:scale-105 active:scale-95 transition-transform">Publish Listing</button>
@@ -397,9 +459,9 @@
 
     <script>
         const PLAN_LIMITS = {
-            'starter': { listings: 1, photos: 1 },
-            'pro': { listings: 3, photos: 5 },
-            'enterprise': { listings: 999, photos: 999 }
+            'starter':    { listings: 1,   photos: 1,  verified: false, analytics: false, videoTour: false, featured: false },
+            'pro':        { listings: 3,   photos: 5,  verified: true,  analytics: true,  videoTour: true,  featured: false },
+            'enterprise': { listings: 999, photos: 15, verified: true,  analytics: true,  videoTour: true,  featured: true  },
         };
         let currentActiveListings = 0;
         let currentUserPlan = 'starter';
@@ -492,6 +554,10 @@
                 const rules = document.getElementById('hostel-rules').value;
                 const contact_phone = document.getElementById('hostel-contact-phone').value;
                 const contact_whatsapp = document.getElementById('hostel-contact-whatsapp').value;
+                const video_url = (document.getElementById('hostel-video-url') && PLAN_LIMITS[currentUserPlan].videoTour)
+                    ? document.getElementById('hostel-video-url').value : '';
+                const is_featured = (document.getElementById('hostel-is-featured') && PLAN_LIMITS[currentUserPlan].featured)
+                    ? document.getElementById('hostel-is-featured').checked : false;
                 
                 const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
                 const amenities = Array.from(amenityCheckboxes).map(cb => cb.value);
@@ -533,14 +599,15 @@
                 if (editingHostelId) {
                     const { error } = await window.supabaseClient.from('hostels').update({
                         name, city, address, type, price_per_month, beds_available: beds,
-                        description, rules, contact_phone, contact_whatsapp, amenities, images: finalImages
+                        description, rules, contact_phone, contact_whatsapp, amenities, images: finalImages,
+                        plan: currentUserPlan, video_url, is_featured
                     }).eq('id', editingHostelId).eq('owner_id', session.user.id);
                     saveError = error;
                 } else {
                     const { error } = await window.supabaseClient.from('hostels').insert([{
                         owner_id: session.user.id, name, city, address, type, price_per_month,
                         beds_available: beds, description, rules, contact_phone, contact_whatsapp,
-                        amenities, images: finalImages
+                        amenities, images: finalImages, plan: currentUserPlan, video_url, is_featured
                     }]);
                     saveError = error;
                 }
@@ -643,6 +710,28 @@
             return [];
         }
 
+        // --- Plan Gating: show/hide Pro & Enterprise form fields ---
+        function applyPlanGating() {
+            const limits = PLAN_LIMITS[currentUserPlan];
+            // Analytics panel
+            const analyticsPanel = document.getElementById('analytics-panel');
+            if (analyticsPanel) analyticsPanel.classList.toggle('hidden', !limits.analytics);
+            // Video Tour field
+            const videoField = document.getElementById('pro-video-field');
+            const videoLocked = document.getElementById('pro-video-locked');
+            if (videoField && videoLocked) {
+                videoField.classList.toggle('hidden', !limits.videoTour);
+                videoLocked.classList.toggle('hidden', limits.videoTour);
+            }
+            // Featured field
+            const featField = document.getElementById('enterprise-featured-field');
+            const featLocked = document.getElementById('enterprise-featured-locked');
+            if (featField && featLocked) {
+                featField.classList.toggle('hidden', !limits.featured);
+                featLocked.classList.toggle('hidden', limits.featured);
+            }
+        }
+
         // --- Editing Logic ---
         function resetEditState() {
             editingHostelId = null;
@@ -652,6 +741,10 @@
             document.getElementById('add-edit-subtitle').textContent = 'Fill in the details to publish your sanctuary to the Ignite platform.';
             document.querySelector('#add-hostel-form button[type="submit"]').textContent = 'Publish Listing';
             document.querySelectorAll('input[name="amenities"]').forEach(cb => cb.checked = false);
+            const vid = document.getElementById('hostel-video-url');
+            if (vid) vid.value = '';
+            const feat = document.getElementById('hostel-is-featured');
+            if (feat) feat.checked = false;
         }
 
         async function editListing(id) {
@@ -673,6 +766,10 @@
             document.getElementById('hostel-rules').value = data.rules || '';
             document.getElementById('hostel-contact-phone').value = data.contact_phone || '';
             document.getElementById('hostel-contact-whatsapp').value = data.contact_whatsapp || '';
+            const vid = document.getElementById('hostel-video-url');
+            if (vid && PLAN_LIMITS[currentUserPlan].videoTour) vid.value = data.video_url || '';
+            const feat = document.getElementById('hostel-is-featured');
+            if (feat && PLAN_LIMITS[currentUserPlan].featured) feat.checked = !!data.is_featured;
             
             const ams = parseArray(data.amenities);
             document.querySelectorAll('input[name="amenities"]').forEach(cb => {
@@ -754,19 +851,45 @@
             if(!window.supabaseClient) return;
             const { data: { session } } = await window.supabaseClient.auth.getSession();
             if(session) {
-                // Fetch hostels to calculate views and count
+                // Fetch hostels to calculate views, count, and analytics
                 const { data: hostels } = await window.supabaseClient
                     .from('hostels')
-                    .select('views')
+                    .select('name, views')
                     .eq('owner_id', session.user.id);
                     
                 if (hostels) {
                     currentActiveListings = hostels.length;
                     document.getElementById('dash-active-listings').textContent = currentActiveListings;
-                    
                     const totalViews = hostels.reduce((sum, h) => sum + (h.views || 0), 0);
                     document.getElementById('dash-total-views').textContent = totalViews;
+
+                    // Build analytics bar chart (Pro/Enterprise only)
+                    if (PLAN_LIMITS[currentUserPlan].analytics) {
+                        if (hostels.length > 0) {
+                            const maxViews = Math.max(...hostels.map(h => h.views || 0), 1);
+                            document.getElementById('analytics-bars').innerHTML = hostels.map(h => {
+                                const pct = Math.max(4, Math.round(((h.views || 0) / maxViews) * 100));
+                                return `
+                                <div class="flex items-center gap-4">
+                                    <span class="text-xs text-on-surface-variant font-bold uppercase tracking-wider w-40 truncate shrink-0">${h.name}</span>
+                                    <div class="flex-1 bg-surface-container rounded-full h-2 overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-[#ff6b35] to-[#ffb59d] rounded-full transition-all duration-1000" style="width:${pct}%"></div>
+                                    </div>
+                                    <span class="text-xs font-bold text-secondary w-10 text-right shrink-0">${h.views || 0}</span>
+                                </div>`;
+                            }).join('');
+                        } else {
+                            document.getElementById('analytics-bars').innerHTML = '<p class="text-on-surface-variant text-sm">No listings yet. Add a hostel to see analytics.</p>';
+                        }
+                    }
                 }
+
+                // Update plan badge in overview
+                const planDisplay = document.getElementById('dash-plan-display');
+                if (planDisplay) planDisplay.textContent = currentUserPlan.charAt(0).toUpperCase() + currentUserPlan.slice(1);
+
+                // Apply plan-based gating to form fields
+                applyPlanGating();
                 
                 // Pre-fetch inquiries count
                 fetchInquiries();
