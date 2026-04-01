@@ -322,13 +322,10 @@
                     if (!Array.isArray(parsedAmenities)) parsedAmenities = [];
                 } catch(e) { parsedAmenities = []; }
 
-                // --- Plan-based extras ---
                 const isVerified = h.plan === 'pro' || h.plan === 'enterprise';
                 const isEnterprise = h.plan === 'enterprise';
-                const hasWhatsApp = isVerified && h.contact_whatsapp;
                 const glowClass = isEnterprise ? 'ring-2 ring-[#ff6b35]/30 shadow-[0_0_30px_rgba(255,107,53,0.12)]' : '';
                 const verifiedBadge = isVerified ? `<span class="bg-[#ff6b35] text-white text-[0.5rem] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:10px;font-variation-settings:'FILL' 1">verified</span> Verified</span>` : '';
-                const waButton = hasWhatsApp ? `<a href="https://wa.me/${h.contact_whatsapp.replace(/\D/g,'')}" target="_blank" onclick="event.stopPropagation()" class="mt-3 flex items-center gap-2 text-[0.6rem] font-bold uppercase tracking-widest text-[#25D366] hover:text-[#1aad57] transition-colors"><span class="material-symbols-outlined text-[14px]">chat</span> WhatsApp</a>` : '';
 
                 return `
                 <a href="hostel-detail.html?id=${h.id}" class="group cursor-pointer block cursor-glow premium-hover rounded-[0.75rem] ${glowClass}" data-reveal data-reveal-delay="${(i % 4) + 1}">
@@ -351,7 +348,6 @@
                         <div class="flex flex-wrap gap-2">
                             ${parsedAmenities.slice(0,3).map(a => `<span class="text-[0.6rem] border border-outline-variant/30 px-3 py-1 rounded-full uppercase text-on-surface-variant">${a}</span>`).join('')}
                         </div>
-                        ${waButton}
                     </div>
                 </a>`;
             }
