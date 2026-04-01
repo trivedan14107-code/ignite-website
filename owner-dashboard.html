@@ -1301,7 +1301,7 @@
             const hostelId = document.getElementById('t-hostel').value || null;
             const payload = {
                 owner_id: user.id,
-                hostel_id: hostelId || undefined,
+                hostel_id: hostelId,  // null when no property selected (column is now nullable)
                 name: document.getElementById('t-name').value.trim(),
                 room_number: document.getElementById('t-room').value.trim(),
                 whatsapp_number: document.getElementById('t-phone').value.trim(),
