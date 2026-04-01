@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="./premium.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script type="module" src="./js/supabase-client.js"></script>
     <!-- Simple logic to protect the route -->
     <script>
@@ -126,6 +127,9 @@
             
             <div class="my-6 border-t border-outline-variant/10 mx-4"></div>
             
+            <button onclick="switchTab('tenants')" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:bg-surface-container-lowest transition-colors text-left">
+                <span class="material-symbols-outlined text-xl">group</span> Tenants
+            </button>
             <button onclick="switchTab('plan')" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold uppercase tracking-wider text-on-surface-variant hover:bg-surface-container-lowest transition-colors text-left">
                 <span class="material-symbols-outlined text-xl">stars</span> My Plan
             </button>
@@ -504,6 +508,157 @@
                 </div>
             </div>
             
+            <!-- TAB: Tenants -->
+            <div id="tab-tenants" class="tab-content hidden animate-[fadeIn_0.3s_ease-out] w-full max-w-6xl mx-auto pb-12">
+
+                <!-- Upsell gate for Starter plan -->
+                <div id="tenants-upsell-gate" class="hidden bg-surface-container-lowest border border-outline-variant/10 rounded-3xl p-12 text-center text-on-surface-variant h-[50vh] flex flex-col items-center justify-center">
+                    <span class="material-symbols-outlined text-6xl mb-4 text-primary">group</span>
+                    <h2 class="text-xl font-headline font-bold uppercase mb-2 text-on-surface">Tenant Manager</h2>
+                    <p class="text-sm max-w-md mb-6">Manage rent collection and communicate with tenants. Upgrade to Pro to unlock this for up to 50 tenants.</p>
+                    <button onclick="switchTab('plan')" class="kinetic-gradient px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs text-on-primary-fixed hover:scale-105 transition-transform">Upgrade to Pro</button>
+                </div>
+
+                <!-- Main Tenant UI -->
+                <div id="tenants-main" class="hidden">
+                    <!-- Header Row -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                        <div>
+                            <p class="text-on-surface-variant text-sm">Tenant roster · <span id="tenant-count-display" class="font-bold text-on-surface">0</span> / <span id="tenant-limit-display">50</span> tenants</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="openScanModal()" class="flex items-center gap-2 bg-surface-container-low border border-outline-variant/20 text-on-surface text-xs font-bold uppercase tracking-widest px-4 py-2.5 rounded-full hover:border-primary/50 transition-colors">
+                                <span class="material-symbols-outlined text-sm text-primary">document_scanner</span> AI Ledger Scan
+                            </button>
+                            <button onclick="openAddTenantModal()" class="flex items-center gap-2 bg-primary-container text-on-primary-fixed text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded-full hover:scale-105 transition-transform shadow-[0_5px_15px_rgba(255,107,53,0.2)]">
+                                <span class="material-symbols-outlined text-sm">person_add</span> Add Tenant
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- UPI ID Banner -->
+                    <div id="upi-banner" class="mb-6 p-4 bg-surface-container-low border border-outline-variant/20 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+                        <div class="flex-1">
+                            <p class="text-xs font-bold text-on-surface">Your UPI ID for Rent Collection</p>
+                            <div class="flex items-center gap-3 mt-1">
+                                <input id="upi-id-input" type="text" placeholder="yourname@okicici" class="bg-transparent text-sm text-on-surface border-b border-outline-variant/30 focus:border-primary focus:outline-none transition-colors w-56 pb-0.5" />
+                                <button onclick="saveUpiId()" class="text-xs font-bold text-primary uppercase tracking-widest hover:underline">Save</button>
+                            </div>
+                        </div>
+                        <p class="text-[0.7rem] text-on-surface-variant">Used to generate QR codes for tenants.</p>
+                    </div>
+
+                    <!-- Tenant Table -->
+                    <div class="bg-surface-container-low border border-outline-variant/10 rounded-2xl overflow-hidden">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-outline-variant/10 text-on-surface-variant">
+                                    <th class="px-6 py-4 text-left text-xs uppercase tracking-widest font-bold">Tenant</th>
+                                    <th class="px-4 py-4 text-left text-xs uppercase tracking-widest font-bold hidden sm:table-cell">Room</th>
+                                    <th class="px-4 py-4 text-left text-xs uppercase tracking-widest font-bold hidden md:table-cell">Rent</th>
+                                    <th class="px-4 py-4 text-left text-xs uppercase tracking-widest font-bold hidden md:table-cell">Due On</th>
+                                    <th class="px-4 py-4 text-left text-xs uppercase tracking-widest font-bold">Status</th>
+                                    <th class="px-4 py-4 text-right text-xs uppercase tracking-widest font-bold">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tenant-table-body">
+                                <tr id="tenant-empty-row">
+                                    <td colspan="6" class="px-6 py-16 text-center text-on-surface-variant">
+                                        <span class="material-symbols-outlined text-4xl mb-2 block text-outline-variant">group_off</span>
+                                        <p class="text-sm">No tenants yet. Click "Add Tenant" or use AI Ledger Scan.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL: Add Tenant -->
+            <div id="modal-add-tenant" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+                <div class="bg-[#1c1b1b] border border-outline-variant/20 rounded-3xl p-8 w-full max-w-md shadow-2xl">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-headline font-bold uppercase">Add Tenant</h3>
+                        <button onclick="closeModal('modal-add-tenant')" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
+                    </div>
+                    <form id="add-tenant-form" onsubmit="submitAddTenant(event)" class="space-y-4">
+                        <input type="hidden" id="tenant-hostel-id" />
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="col-span-2">
+                                <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">Full Name</label>
+                                <input id="t-name" type="text" required placeholder="Rahul Sharma" class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none transition-colors" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">Room #</label>
+                                <input id="t-room" type="text" required placeholder="101" class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none transition-colors" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">Due Day</label>
+                                <input id="t-due" type="number" min="1" max="31" required placeholder="5" class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none transition-colors" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">WhatsApp No.</label>
+                                <input id="t-phone" type="tel" required placeholder="9876543210" maxlength="10" class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none transition-colors" />
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">Monthly Rent (₹)</label>
+                                <input id="t-rent" type="number" required placeholder="5000" class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none transition-colors" />
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">Property</label>
+                            <select id="t-hostel" class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2.5 text-sm text-on-surface focus:border-primary focus:outline-none transition-colors">
+                                <option value="">Select a property...</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-primary-container text-on-primary-fixed py-3 rounded-full font-bold uppercase tracking-wider mt-2 hover:scale-105 active:scale-95 transition-transform">Save Tenant</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- MODAL: AI Ledger Scan -->
+            <div id="modal-scan-ledger" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+                <div class="bg-[#1c1b1b] border border-outline-variant/20 rounded-3xl p-8 w-full max-w-lg shadow-2xl">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-headline font-bold uppercase">AI Ledger Scan</h3>
+                        <button onclick="closeModal('modal-scan-ledger')" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
+                    </div>
+                    <div id="scan-upload-area" class="border-2 border-dashed border-outline-variant/30 rounded-2xl p-10 text-center cursor-pointer hover:border-primary/50 transition-colors" onclick="document.getElementById('ledger-image-input').click()">
+                        <span class="material-symbols-outlined text-5xl text-primary mb-3 block">photo_camera</span>
+                        <p class="font-bold text-on-surface mb-1">Take a photo or upload your ledger</p>
+                        <p class="text-xs text-on-surface-variant">Tap to select an image from your phone gallery or camera</p>
+                        <input id="ledger-image-input" type="file" accept="image/*" capture="environment" class="hidden" onchange="handleLedgerImageSelect(event)" />
+                    </div>
+                    <div id="scan-preview" class="hidden mt-4">
+                        <img id="scan-preview-img" class="rounded-xl w-full max-h-48 object-contain" />
+                    </div>
+                    <div id="scan-results" class="hidden mt-4 max-h-60 overflow-y-auto space-y-2">
+                        <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Detected Tenants — Review & Import</p>
+                    </div>
+                    <div id="scan-status" class="hidden mt-4 text-center text-sm text-on-surface-variant"></div>
+                    <div class="flex gap-3 mt-6">
+                        <button id="scan-btn" onclick="runLedgerScan()" class="flex-1 bg-primary-container text-on-primary-fixed py-3 rounded-full font-bold uppercase tracking-wider hover:scale-105 transition-transform text-sm hidden">Scan with AI</button>
+                        <button id="import-all-btn" onclick="importAllScannedTenants()" class="flex-1 bg-success/20 border border-success/40 text-success py-3 rounded-full font-bold uppercase tracking-wider hover:bg-success/30 transition-colors text-sm hidden">Import All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL: UPI QR Code -->
+            <div id="modal-upi-qr" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4">
+                <div class="bg-[#1c1b1b] border border-outline-variant/20 rounded-3xl p-8 w-full max-w-sm shadow-2xl text-center">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-headline font-bold uppercase">Rent QR Code</h3>
+                        <button onclick="closeModal('modal-upi-qr')" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
+                    </div>
+                    <p class="text-on-surface-variant text-sm mb-2">Share with <span id="qr-tenant-name" class="font-bold text-on-surface"></span></p>
+                    <p class="text-primary font-bold text-2xl mb-6">₹<span id="qr-amount"></span></p>
+                    <div id="qr-code-container" class="bg-white p-4 rounded-2xl inline-block mb-4"></div>
+                    <p id="qr-upi-string" class="text-[0.65rem] text-on-surface-variant break-all mt-2 mb-4"></p>
+                    <a id="qr-pay-link" href="#" class="block w-full bg-primary-container text-on-primary-fixed py-3 rounded-full font-bold uppercase tracking-wider text-sm hover:scale-105 transition-transform">Open in UPI App</a>
+                </div>
+            </div>
+
             <div id="tab-settings" class="tab-content hidden animate-[fadeIn_0.3s_ease-out]">
                 <div class="bg-surface-container-lowest border border-outline-variant/10 rounded-3xl p-12 text-center text-on-surface-variant h-[50vh] flex flex-col items-center justify-center">
                     <span class="material-symbols-outlined text-6xl mb-4 text-outline-variant">settings</span>
@@ -524,9 +679,9 @@
 
     <script>
         const PLAN_LIMITS = {
-            'starter':    { listings: 1,   photos: 1,  verified: false, analytics: false, videoTour: false, featured: false },
-            'pro':        { listings: 3,   photos: 5,  verified: true,  analytics: true,  videoTour: true,  featured: false },
-            'enterprise': { listings: 999, photos: 15, verified: true,  analytics: true,  videoTour: true,  featured: true  },
+            'starter':    { listings: 1,   photos: 1,  verified: false, analytics: false, videoTour: false, featured: false, tenants: 0   },
+            'pro':        { listings: 3,   photos: 5,  verified: true,  analytics: true,  videoTour: true,  featured: false, tenants: 50  },
+            'enterprise': { listings: 999, photos: 15, verified: true,  analytics: true,  videoTour: true,  featured: true,  tenants: 200 },
         };
         let currentActiveListings = 0;
         let currentUserPlan = 'starter';
@@ -538,6 +693,7 @@
             'listings': 'My Listings',
             'add-hostel': 'Add New Hostel',
             'inquiries': 'Inquiries',
+            'tenants': 'Tenant Manager',
             'plan': 'Subscription Plan',
             'settings': 'Settings'
         };
@@ -601,6 +757,8 @@
                 fetchMyListings();
             } else if (tabId === 'inquiries') {
                 fetchInquiries();
+            } else if (tabId === 'tenants') {
+                initTenantsTab();
             }
         }
 
@@ -1016,6 +1174,285 @@
                 fetchInquiries();
             }
         });
+        // ===============
+        // TENANT MANAGER
+        // ===============
+        let tenantList = [];
+        let scannedTenants = [];
+
+        function initTenantsTab() {
+            const limit = PLAN_LIMITS[currentUserPlan].tenants;
+            const gate = document.getElementById('tenants-upsell-gate');
+            const main = document.getElementById('tenants-main');
+
+            if (limit === 0) {
+                gate.classList.remove('hidden');
+                main.classList.add('hidden');
+            } else {
+                gate.classList.add('hidden');
+                main.classList.remove('hidden');
+                document.getElementById('tenant-limit-display').textContent = limit;
+                // Load saved UPI ID
+                const savedUpi = window.supabaseClient?.auth?.getUser ? '' : '';
+                window.supabaseClient.auth.getUser().then(({ data }) => {
+                    const upi = data?.user?.user_metadata?.upi_id || '';
+                    document.getElementById('upi-id-input').value = upi;
+                });
+                loadTenants();
+                populateHostelSelect();
+            }
+        }
+
+        async function saveUpiId() {
+            const upiVal = document.getElementById('upi-id-input').value.trim();
+            if (!upiVal) return alert('Please enter a valid UPI ID.');
+            const { error } = await window.supabaseClient.auth.updateUser({ data: { upi_id: upiVal } });
+            if (error) alert('Failed to save: ' + error.message);
+            else {
+                const btn = document.querySelector('[onclick="saveUpiId()"]');
+                const orig = btn.textContent;
+                btn.textContent = 'Saved ✓';
+                setTimeout(() => btn.textContent = orig, 2000);
+            }
+        }
+
+        async function populateHostelSelect() {
+            const { data: { user } } = await window.supabaseClient.auth.getUser();
+            const { data } = await window.supabaseClient.from('hostels').select('id, name').eq('owner_id', user.id);
+            const sel = document.getElementById('t-hostel');
+            sel.innerHTML = '<option value="">Select a property...</option>';
+            (data || []).forEach(h => {
+                sel.innerHTML += `<option value="${h.id}">${h.name}</option>`;
+            });
+        }
+
+        async function loadTenants() {
+            const { data: { user } } = await window.supabaseClient.auth.getUser();
+            const { data, error } = await window.supabaseClient.from('tenants').select('*').eq('owner_id', user.id).order('created_at', { ascending: false });
+            if (error) { console.error(error); return; }
+            tenantList = data || [];
+            renderTenantTable();
+        }
+
+        function renderTenantTable() {
+            const tbody = document.getElementById('tenant-table-body');
+            const emptyRow = document.getElementById('tenant-empty-row');
+            document.getElementById('tenant-count-display').textContent = tenantList.length;
+
+            if (tenantList.length === 0) {
+                tbody.innerHTML = '';
+                tbody.appendChild(emptyRow);
+                emptyRow.classList.remove('hidden');
+                return;
+            }
+
+            emptyRow.classList.add('hidden');
+            tbody.innerHTML = tenantList.map(t => {
+                const statusColor = t.status === 'paid' ? 'text-success bg-success/10' : 'text-primary bg-primary/10';
+                const statusLabel = t.status === 'paid' ? 'Paid' : 'Pending';
+                return `
+                <tr class="border-t border-outline-variant/10 hover:bg-surface-container-lowest/50 transition-colors group">
+                    <td class="px-6 py-4">
+                        <p class="font-bold text-on-surface text-sm">${t.name}</p>
+                        <p class="text-xs text-on-surface-variant">${t.whatsapp_number}</p>
+                    </td>
+                    <td class="px-4 py-4 text-on-surface-variant text-sm hidden sm:table-cell">${t.room_number}</td>
+                    <td class="px-4 py-4 font-bold text-on-surface text-sm hidden md:table-cell">₹${Number(t.rent_amount).toLocaleString('en-IN')}</td>
+                    <td class="px-4 py-4 text-on-surface-variant text-sm hidden md:table-cell">${t.due_date}${getDaySuffix(t.due_date)} of month</td>
+                    <td class="px-4 py-4">
+                        <button onclick="toggleTenantStatus('${t.id}', '${t.status}')" class="text-[0.7rem] font-bold px-3 py-1 rounded-full ${statusColor} uppercase tracking-widest transition-colors">${statusLabel}</button>
+                    </td>
+                    <td class="px-4 py-4 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <button onclick="openUpiModal('${t.name}', ${t.rent_amount})" title="Generate UPI QR" class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-lg">qr_code</span>
+                            </button>
+                            <a href="https://wa.me/91${t.whatsapp_number}" target="_blank" title="WhatsApp" class="p-1.5 text-on-surface-variant hover:text-[#25D366] transition-colors">
+                                <span class="material-symbols-outlined text-lg">chat</span>
+                            </a>
+                            <button onclick="deleteTenant('${t.id}')" title="Delete" class="p-1.5 text-on-surface-variant hover:text-error transition-colors">
+                                <span class="material-symbols-outlined text-lg">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function getDaySuffix(d) {
+            if (d >= 11 && d <= 13) return 'th';
+            switch (d % 10) { case 1: return 'st'; case 2: return 'nd'; case 3: return 'rd'; default: return 'th'; }
+        }
+
+        function openAddTenantModal() {
+            const limit = PLAN_LIMITS[currentUserPlan].tenants;
+            if (tenantList.length >= limit) return alert(`You have reached your ${currentUserPlan.toUpperCase()} plan limit of ${limit} tenants.`);
+            document.getElementById('add-tenant-form').reset();
+            document.getElementById('modal-add-tenant').classList.remove('hidden');
+        }
+
+        async function submitAddTenant(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('[type="submit"]');
+            btn.textContent = 'Saving...';
+            btn.disabled = true;
+
+            const { data: { user } } = await window.supabaseClient.auth.getUser();
+            const hostelId = document.getElementById('t-hostel').value || null;
+            const payload = {
+                owner_id: user.id,
+                hostel_id: hostelId || undefined,
+                name: document.getElementById('t-name').value.trim(),
+                room_number: document.getElementById('t-room').value.trim(),
+                whatsapp_number: document.getElementById('t-phone').value.trim(),
+                rent_amount: parseFloat(document.getElementById('t-rent').value),
+                due_date: parseInt(document.getElementById('t-due').value),
+                status: 'pending'
+            };
+
+            const { error } = await window.supabaseClient.from('tenants').insert([payload]);
+            btn.textContent = 'Save Tenant';
+            btn.disabled = false;
+            if (error) return alert('Error: ' + error.message);
+            closeModal('modal-add-tenant');
+            loadTenants();
+        }
+
+        async function toggleTenantStatus(id, current) {
+            const nextStatus = current === 'paid' ? 'pending' : 'paid';
+            await window.supabaseClient.from('tenants').update({ status: nextStatus }).eq('id', id);
+            loadTenants();
+        }
+
+        async function deleteTenant(id) {
+            if (!confirm('Remove this tenant?')) return;
+            await window.supabaseClient.from('tenants').delete().eq('id', id);
+            loadTenants();
+        }
+
+        // --- UPI QR Code ---
+        function openUpiModal(name, amount) {
+            const upiId = document.getElementById('upi-id-input').value.trim();
+            if (!upiId) return alert('Please save your UPI ID first (in the Tenants tab banner).');
+            const upiString = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=Ignite+Hostel&am=${amount}&cu=INR&tn=Rent+Payment&mode=02`;
+            document.getElementById('qr-tenant-name').textContent = name;
+            document.getElementById('qr-amount').textContent = Number(amount).toLocaleString('en-IN');
+            document.getElementById('qr-upi-string').textContent = upiString;
+            document.getElementById('qr-pay-link').href = upiString;
+
+            const container = document.getElementById('qr-code-container');
+            container.innerHTML = '';
+            new QRCode(container, { text: upiString, width: 200, height: 200, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+            document.getElementById('modal-upi-qr').classList.remove('hidden');
+        }
+
+        // --- AI Ledger Scan ---
+        let selectedLedgerFile = null;
+
+        function openScanModal() {
+            document.getElementById('scan-results').classList.add('hidden');
+            document.getElementById('scan-preview').classList.add('hidden');
+            document.getElementById('scan-btn').classList.add('hidden');
+            document.getElementById('import-all-btn').classList.add('hidden');
+            document.getElementById('scan-status').classList.add('hidden');
+            document.getElementById('ledger-image-input').value = '';
+            selectedLedgerFile = null;
+            scannedTenants = [];
+            document.getElementById('modal-scan-ledger').classList.remove('hidden');
+        }
+
+        function handleLedgerImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            selectedLedgerFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('scan-preview-img').src = e.target.result;
+                document.getElementById('scan-preview').classList.remove('hidden');
+                document.getElementById('scan-btn').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function runLedgerScan() {
+            if (!selectedLedgerFile) return;
+            const statusEl = document.getElementById('scan-status');
+            const scanBtn = document.getElementById('scan-btn');
+            scanBtn.textContent = 'Scanning...';
+            scanBtn.disabled = true;
+            statusEl.textContent = '🔍 AI is reading your handwriting...';
+            statusEl.classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const base64 = e.target.result.split(',')[1];
+                try {
+                    const res = await fetch('/api/parse-ledger', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ imageBase64: base64 })
+                    });
+                    const json = await res.json();
+                    if (!res.ok) throw new Error(json.error);
+                    scannedTenants = json.tenants || [];
+                    renderScanResults(scannedTenants);
+                } catch (err) {
+                    statusEl.textContent = '❌ ' + err.message;
+                } finally {
+                    scanBtn.textContent = 'Scan with AI';
+                    scanBtn.disabled = false;
+                }
+            };
+            reader.readAsDataURL(selectedLedgerFile);
+        }
+
+        function renderScanResults(tenants) {
+            const statusEl = document.getElementById('scan-status');
+            const resultsEl = document.getElementById('scan-results');
+            const importBtn = document.getElementById('import-all-btn');
+
+            if (tenants.length === 0) {
+                statusEl.textContent = '⚠️ No tenant records detected. Please use a clearer photo.';
+                return;
+            }
+
+            statusEl.classList.add('hidden');
+            resultsEl.classList.remove('hidden');
+            importBtn.classList.remove('hidden');
+
+            resultsEl.innerHTML = '<p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Detected Tenants — Review & Import</p>';
+            tenants.forEach((t, i) => {
+                resultsEl.innerHTML += `
+                <div class="bg-surface-container-lowest border border-outline-variant/10 rounded-xl p-3 text-sm flex items-center justify-between gap-2">
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-on-surface truncate">${t.name}</p>
+                        <p class="text-on-surface-variant text-xs">Room ${t.room_number} · ₹${t.rent_amount}/mo · ${t.whatsapp_number}</p>
+                    </div>
+                    <button onclick="importSingleTenant(${i})" class="shrink-0 text-xs bg-primary-container text-on-primary-fixed px-3 py-1 rounded-full font-bold uppercase">Import</button>
+                </div>`;
+            });
+        }
+
+        async function importSingleTenant(index) {
+            const t = scannedTenants[index];
+            const { data: { user } } = await window.supabaseClient.auth.getUser();
+            await window.supabaseClient.from('tenants').insert([{ ...t, owner_id: user.id, status: 'pending' }]);
+            loadTenants();
+        }
+
+        async function importAllScannedTenants() {
+            const { data: { user } } = await window.supabaseClient.auth.getUser();
+            const rows = scannedTenants.map(t => ({ ...t, owner_id: user.id, status: 'pending' }));
+            const { error } = await window.supabaseClient.from('tenants').insert(rows);
+            if (error) alert('Import error: ' + error.message);
+            else {
+                closeModal('modal-scan-ledger');
+                loadTenants();
+            }
+        }
+
+        // --- Modal Helpers ---
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
     </script>
     <script src="./js/premium.js"></script>
 </body>
